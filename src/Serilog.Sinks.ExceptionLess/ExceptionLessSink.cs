@@ -11,10 +11,12 @@ namespace Serilog.Sinks.ExceptionLess
 {
     public class ExceptionLessSink : ILogEventSink
     {
+        private readonly Func<ErrorBuilder, ErrorBuilder> _additionalOperation;
         private readonly bool _includeProperties;
 
-        public ExceptionLessSink(bool includeProperties = true)
+        public ExceptionLessSink( Func<ErrorBuilder, ErrorBuilder> additionalOperation = null, bool includeProperties= true)
         {
+            _additionalOperation = additionalOperation;
             _includeProperties = includeProperties;
         }
 
@@ -27,14 +29,20 @@ namespace Serilog.Sinks.ExceptionLess
                 return;
 
             ErrorBuilder errorBuilder = logEvent.Exception.ToExceptionless();
-
             if (logEvent.Level == LogEventLevel.Fatal)
+            {
                 errorBuilder.MarkAsCritical();
-
+            }
+            
             if (_includeProperties && logEvent.Properties != null && logEvent.Properties.Count != 0)
             {
-                errorBuilder.AddObject(logEvent.Properties);
+                errorBuilder.AddObject(logEvent.Properties, "Log Properties");
             }
+            
+            errorBuilder.AddObject(logEvent.RenderMessage(), "Log Message");
+
+            if (_additionalOperation != null)
+                _additionalOperation(errorBuilder);
 
             errorBuilder.Submit();
         }
