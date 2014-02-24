@@ -33,14 +33,17 @@ namespace Serilog.Sinks.ExceptionLess
             {
                 errorBuilder.MarkAsCritical();
             }
-            
-            if (_includeProperties && logEvent.Properties != null && logEvent.Properties.Count != 0)
-            {
-                errorBuilder.AddObject(logEvent.Properties, "Log Properties");
-            }
-            
+
             errorBuilder.AddObject(logEvent.RenderMessage(), "Log Message");
 
+            if (_includeProperties && logEvent.Properties != null && logEvent.Properties.Count != 0)
+            {
+                foreach (var property in logEvent.Properties)
+                {
+                    errorBuilder.AddObject(property.Value, property.Key);
+                }                
+            }
+            
             if (_additionalOperation != null)
                 _additionalOperation(errorBuilder);
 
