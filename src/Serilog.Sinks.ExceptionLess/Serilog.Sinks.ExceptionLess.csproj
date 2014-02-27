@@ -30,13 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Exceptionless, Version=1.3.1858.0, Culture=neutral, PublicKeyToken=fc181f0a46f65747, processorArchitecture=MSIL">
+    <Reference Include="Exceptionless, Version=1.3.1874.0, Culture=neutral, PublicKeyToken=fc181f0a46f65747, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Exceptionless.1.3.1858\lib\net45\Exceptionless.dll</HintPath>
+      <HintPath>..\packages\Exceptionless.1.3.1874\lib\net45\Exceptionless.dll</HintPath>
     </Reference>
-    <Reference Include="Exceptionless.Models, Version=1.3.1858.0, Culture=neutral, PublicKeyToken=fc181f0a46f65747, processorArchitecture=MSIL">
+    <Reference Include="Exceptionless.Models, Version=1.3.1874.0, Culture=neutral, PublicKeyToken=fc181f0a46f65747, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Exceptionless.1.3.1858\lib\net45\Exceptionless.Models.dll</HintPath>
+      <HintPath>..\packages\Exceptionless.1.3.1874\lib\net45\Exceptionless.Models.dll</HintPath>
     </Reference>
     <Reference Include="Serilog">
       <HintPath>..\packages\Serilog.1.2.25\lib\net45\Serilog.dll</HintPath>
@@ -58,6 +58,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="package.cmd" />
     <None Include="packages.config" />
     <None Include="Serilog.Sinks.ExceptionLess.nuspec" />
   </ItemGroup>
