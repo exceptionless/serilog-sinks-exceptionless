@@ -1,0 +1,1 @@
+nuget pack Serilog.Sinks.ExceptionLess.csproj -Prop Configuration=Release
