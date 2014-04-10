@@ -9,7 +9,9 @@
     <projectUrl>https://github.com/enkafan/Serilog.Sinks.ExceptionLess</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Initial release</releaseNotes>
+    <releaseNotes>
+      Updated with support for Serilog version 1.2.44
+    </releaseNotes>
     <copyright>Copyright 2014</copyright>
     <tags>Serilog ExceptionLess</tags>
   </metadata>

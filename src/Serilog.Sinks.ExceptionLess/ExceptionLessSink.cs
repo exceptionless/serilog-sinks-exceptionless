@@ -33,10 +33,10 @@
         /// <param name="includeProperties">
         /// If false then the seri log properties will not be submitted to ExceptionLess
         /// </param>
-        public ExceptionLessSink(Func<ErrorBuilder, ErrorBuilder> additionalOperation = null, bool includeProperties= true)
+        public ExceptionLessSink(Func<ErrorBuilder, ErrorBuilder> additionalOperation = null, bool includeProperties = true)
         {
-            this._additionalOperation = additionalOperation;
-            this._includeProperties = includeProperties;
+            _additionalOperation = additionalOperation;
+            _includeProperties = includeProperties;
         }
 
         public void Emit(LogEvent logEvent)
@@ -59,7 +59,7 @@
 
             errorBuilder.AddObject(logEvent.RenderMessage(), "Log Message");
 
-            if (this._includeProperties && logEvent.Properties != null && logEvent.Properties.Count != 0)
+            if (_includeProperties && logEvent.Properties != null && logEvent.Properties.Count != 0)
             {
                 foreach (var property in logEvent.Properties)
                 {
@@ -67,9 +67,9 @@
                 }                
             }
 
-            if (this._additionalOperation != null)
+            if (_additionalOperation != null)
             {
-                this._additionalOperation(errorBuilder);
+                _additionalOperation(errorBuilder);
             }
 
             errorBuilder.Submit();
