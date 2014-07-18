@@ -1,10 +1,7 @@
 ﻿namespace Serilog.Sinks.ExceptionLess
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
     using Core;
     using Events;
     using Exceptionless;
@@ -56,15 +53,15 @@
             {
                 errorBuilder.MarkAsCritical();
             }
-
+            
             errorBuilder.AddObject(logEvent.RenderMessage(), "Log Message");
 
             if (_includeProperties && logEvent.Properties != null && logEvent.Properties.Count != 0)
             {
                 foreach (var property in logEvent.Properties)
                 {
-                    errorBuilder.AddObject(property.Value, property.Key);
-                }                
+                    errorBuilder.AddObject(FlattenProperties(property.Value), property.Key);
+                }
             }
 
             if (_additionalOperation != null)
@@ -73,6 +70,43 @@
             }
 
             errorBuilder.Submit();
+        }
+
+        /// <summary>
+        /// Removes the structure of <see cref="LogEventPropertyValue"/> implementations introduced
+        /// by Serilog and brings properties closer to the structure of the original object.
+        /// This enables Exceptionless to display the properties in a nicer way.
+        /// </summary>
+        private static object FlattenProperties(LogEventPropertyValue value)
+        {
+            var scalar = value as ScalarValue;
+            if (scalar != null)
+            {
+                return scalar.Value;
+            }
+
+            var sequence = value as SequenceValue;
+            if (sequence != null)
+            {
+                return sequence.Elements
+                    .Select(FlattenProperties);
+            }
+
+            var structure = value as StructureValue;
+            if (structure != null)
+            {
+                return structure.Properties
+                    .ToDictionary(p => p.Name, p => FlattenProperties(p.Value));
+            }
+
+            var dictionary = value as DictionaryValue;
+            if (dictionary != null)
+            {
+                return dictionary.Elements
+                    .ToDictionary(p => p.Key.Value, p => FlattenProperties(p.Value));
+            }
+
+            return value;
         }
     }
 }
