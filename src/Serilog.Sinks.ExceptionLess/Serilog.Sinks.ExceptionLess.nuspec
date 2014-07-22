@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>
-      Updated with support for Serilog version 1.2.44
+      Improved display of additional data in Exceptionless, updated ExceptionLess and Serilog libraries
     </releaseNotes>
     <copyright>Copyright 2014</copyright>
     <tags>Serilog ExceptionLess</tags>
