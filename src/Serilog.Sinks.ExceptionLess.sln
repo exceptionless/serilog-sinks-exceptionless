@@ -1,9 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serilog.Sinks.ExceptionLess", "Serilog.Sinks.ExceptionLess\Serilog.Sinks.ExceptionLess.csproj", "{1DC3D8DA-3743-411A-B7B4-2A4F11398A58}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{D1B3AA3E-8543-4C53-86BA-2D9306C05812}"
+	ProjectSection(SolutionItems) = preProject
+		..\assets\CommonAssemblyInfo.cs = ..\assets\CommonAssemblyInfo.cs
+		..\assets\Serilog.snk = ..\assets\Serilog.snk
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F4C155BE-B6D0-45A1-9474-A45E3BB4542F}"
+	ProjectSection(SolutionItems) = preProject
+		..\Build.ps1 = ..\Build.ps1
+		..\CHANGES.md = ..\CHANGES.md
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
