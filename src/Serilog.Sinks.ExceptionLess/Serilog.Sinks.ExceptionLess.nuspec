@@ -1,18 +1,20 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
+    <id>Serilog.Sinks.ExceptionLess</id>
     <version>$version$</version>
-    <title>$title$</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
-    <projectUrl>https://github.com/enkafan/Serilog.Sinks.ExceptionLess</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
-    <releaseNotes>
-      Improved display of additional data in Exceptionless, updated ExceptionLess and Serilog libraries
-    </releaseNotes>
-    <copyright>Copyright 2014</copyright>
-    <tags>Serilog ExceptionLess</tags>
+    <authors>Serilog Contributors</authors>
+    <description>The perfect way for .NET apps to write structured log events to Exceptionless.</description>
+    <projectUrl>http://serilog.net</projectUrl>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <iconUrl>http://serilog.net/images/serilog-sink-nuget.png</iconUrl>
+    <tags>serilog logging Exceptionless</tags> 
+    <copyright>Copyright 2015</copyright> 
   </metadata>
+  <dependencies>
+    <dependency id="Serilog" version="[1.4.204,2)" />
+    <dependency id="Exceptionless" version="[3,4]" />
+    <dependency id="Exceptionless.Portable" version="[3,4]" />
+
+  </dependencies>
 </package>

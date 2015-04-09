@@ -1,11 +1,11 @@
-﻿namespace Serilog.Sinks.ExceptionLess
-{
-    using System;
-    using System.Linq;
-    using Core;
-    using Events;
-    using Exceptionless;
+﻿using System;
+using System.Linq;
+using Exceptionless;
+using Serilog.Core;
+using Serilog.Events;
 
+namespace Serilog.Sinks
+{
     /// <summary>
     /// ExceptionLess Sink
     /// </summary>

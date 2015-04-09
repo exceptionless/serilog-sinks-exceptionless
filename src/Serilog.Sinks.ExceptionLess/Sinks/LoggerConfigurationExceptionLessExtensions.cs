@@ -1,9 +1,9 @@
-namespace Serilog.Sinks.ExceptionLess
+using System;
+using Exceptionless;
+using Serilog.Configuration;
+
+namespace Serilog.Sinks
 {
-    using System;
-    using Configuration;
-    using Exceptionless;
-    
     /// <summary>
     /// The logger configuration exception less extensions.
     /// </summary>
