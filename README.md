@@ -21,7 +21,6 @@ Added the ability to add additional ExceptionLess configuration when configuring
 ```csharp
 Log.Logger = new LoggerConfiguration()
     .Enrich.With(new HttpRequestIdEnricher())
-    .WriteTo.Glimpse()
-    .WriteTo.ExceptionLess(builder => builder.AddRequestInfo())
+    .WriteTo.ExceptionLess(b => b.AddTags("Cart").AddObject(order).AddRequestInfo())
     .CreateLogger();
 ```
