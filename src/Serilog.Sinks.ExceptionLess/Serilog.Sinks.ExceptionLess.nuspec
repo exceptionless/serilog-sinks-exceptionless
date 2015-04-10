@@ -9,10 +9,10 @@
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <iconUrl>http://serilog.net/images/serilog-sink-nuget.png</iconUrl>
     <tags>serilog logging Exceptionless</tags> 
-    <copyright>Copyright 2015</copyright> 
+    <copyright>Copyright 2015</copyright>   
+    <dependencies>
+      <dependency id="Serilog" version="[1.4.204,2)" />
+      <dependency id="Exceptionless" version="[3,4]" />
+    </dependencies>
   </metadata>
-  <dependencies>
-    <dependency id="Serilog" version="[1.4.204,2)" />
-    <dependency id="Exceptionless" version="[3,4]" />
-  </dependencies>
 </package>
