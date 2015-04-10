@@ -30,25 +30,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Exceptionless, Version=3.0.1318.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Exceptionless.3.0.1318\lib\net45\Exceptionless.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Exceptionless">
+      <HintPath>..\..\packages\Exceptionless.3.0.1318\lib\net45\Exceptionless.dll</HintPath>
     </Reference>
-    <Reference Include="Exceptionless.Extras, Version=3.0.1318.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Exceptionless.3.0.1318\lib\net45\Exceptionless.Extras.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Exceptionless.Extras">
+      <HintPath>..\..\packages\Exceptionless.3.0.1318\lib\net45\Exceptionless.Extras.dll</HintPath>
     </Reference>
-    <Reference Include="Exceptionless.Portable, Version=3.0.1318.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Exceptionless.Portable.3.0.1318\lib\portable-net40+sl50+win+wpa81+wp80\Exceptionless.Portable.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Exceptionless.Portable">
+      <HintPath>..\..\packages\Exceptionless.Portable.3.0.1318\lib\portable-net40+sl50+win+wpa81+wp80\Exceptionless.Portable.dll</HintPath>
     </Reference>
-    <Reference Include="Serilog, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.1.5.1\lib\net45\Serilog.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Serilog">
+      <HintPath>..\..\packages\Serilog.1.5.1\lib\net45\Serilog.dll</HintPath>
     </Reference>
-    <Reference Include="Serilog.FullNetFx, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
-      <HintPath>..\packages\Serilog.1.5.1\lib\net45\Serilog.FullNetFx.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Serilog.FullNetFx">
+      <HintPath>..\..\packages\Serilog.1.5.1\lib\net45\Serilog.FullNetFx.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -62,12 +57,14 @@
     <Compile Include="..\..\assets\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ExceptionlessClientExtensions.cs" />
-    <Compile Include="ExceptionLessSink.cs" />
+    <Compile Include="Sinks\ExceptionLess\ExceptionlessClientExtensions.cs" />
+    <Compile Include="Sinks\ExceptionLess\ExceptionLessSink.cs" />
     <Compile Include="LoggerSinkConfigurationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Serilog.Sinks.ExceptionLess.nuspec" />
   </ItemGroup>
   <ItemGroup />
