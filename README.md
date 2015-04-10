@@ -6,6 +6,9 @@ Serilog sink to publish to ExceptionLess
 ```
 PM> Install-Package Serilog.Sinks.ExceptionLess
 ```
+Version 2.0.0
+-------------
+Added support for Exceptionless 2.0.
 
 Version 1.1.2
 -------------

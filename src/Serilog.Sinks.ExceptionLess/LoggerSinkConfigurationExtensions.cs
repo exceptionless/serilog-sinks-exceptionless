@@ -2,13 +2,11 @@ using System;
 using Exceptionless;
 using Serilog.Configuration;
 
-namespace Serilog.Sinks
-{
+namespace Serilog {
     /// <summary>
     /// The logger configuration exception less extensions.
     /// </summary>
-    public static class LoggerConfigurationExceptionLessExtensions
-    {
+    public static class LoggerSinkConfigurationExtensions {
         /// <summary>
         /// Creates a new ExceptionLess sink
         /// </summary>
@@ -26,12 +24,9 @@ namespace Serilog.Sinks
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// </exception>
-        public static LoggerConfiguration ExceptionLess(this LoggerSinkConfiguration loggerConfiguration, Func<ErrorBuilder, ErrorBuilder> additionalOperation = null, bool includeProperties = true)
-        {
+        public static LoggerConfiguration ExceptionLess(this LoggerSinkConfiguration loggerConfiguration, Func<EventBuilder, EventBuilder> additionalOperation = null, bool includeProperties = true) {
             if (loggerConfiguration == null)
-            {
                 throw new ArgumentNullException("loggerConfiguration");
-            }
 
             return loggerConfiguration.Sink(new ExceptionLessSink(additionalOperation, includeProperties));
         }
