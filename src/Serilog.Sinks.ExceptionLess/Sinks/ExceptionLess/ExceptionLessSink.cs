@@ -4,7 +4,7 @@ using Exceptionless;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Serilog {
+namespace Serilog.Sinks.ExceptionLess {
     /// <summary>
     /// ExceptionLess Sink
     /// </summary>

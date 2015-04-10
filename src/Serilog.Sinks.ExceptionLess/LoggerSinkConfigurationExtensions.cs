@@ -1,6 +1,7 @@
-using System;
+using System; 
 using Exceptionless;
 using Serilog.Configuration;
+using Serilog.Sinks.ExceptionLess;
 
 namespace Serilog {
     /// <summary>

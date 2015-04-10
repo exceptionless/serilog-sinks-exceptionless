@@ -2,7 +2,7 @@
 using Exceptionless;
 using Serilog.Events;
 
-namespace Serilog {
+namespace Serilog.Sinks.ExceptionLess {
     public static class ExceptionlessClientExtensions {
         public static EventBuilder CreateFromLogEvent(this ExceptionlessClient client, LogEvent log) {
             var builder = log.Exception != null 
