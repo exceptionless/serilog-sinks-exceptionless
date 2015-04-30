@@ -46,7 +46,7 @@ function Invoke-NuGetPack($version)
 {
     ls src/**/*.csproj |
         Where-Object { -not ($_.Name -like "*net40*") } |
-        ForEach-Object { Invoke-NuGetPackProj $_ }
+        ForEach-Object { Invoke-NuGetPackProj $_ $version }
 }
 
 function Invoke-Build($majorMinor, $patch, $customLogger, $notouch, $sln)
