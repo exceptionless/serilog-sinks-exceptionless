@@ -32,22 +32,19 @@ function Invoke-MSBuild($solution, $customLogger)
     }
 }
 
-function Invoke-NuGetPackProj($csproj)
+function Invoke-NuGetPackProj($csproj, $version)
 {
-    nuget pack -Prop Configuration=Release -Symbols $csproj
+    Write-Output "CsProj: $csproj"
+    nuget pack -Prop Configuration=Release -Symbols $csproj -Version $version -Verbosity detailed
 }
 
 function Invoke-NuGetPackSpec($nuspec, $version)
-{
-    Write-Output "Nuspec: $nuspec"
-    Write-Output "Version: $version"
-    
+{   
     nuget pack $nuspec -Version $version -OutputDirectory ..\..\ -Verbosity detailed
 }
 
 function Invoke-NuGetPack($version)
 {
-    
     ls src/**/*.csproj |
         Where-Object { -not ($_.Name -like "*net40*") } |
         ForEach-Object { Invoke-NuGetPackProj $_ $version }
