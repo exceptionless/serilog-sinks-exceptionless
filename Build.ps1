@@ -39,8 +39,8 @@ function Invoke-NuGetPackProj($csproj)
 
 function Invoke-NuGetPackSpec($nuspec, $version)
 {
-    Write-Output $nuspec
-    Write-Output $version
+    Write-Output "Nuspec: $nuspec"
+    Write-Output "Version: $version"
     
     nuget pack $nuspec -Version $version -OutputDirectory ..\..\ -Verbosity detailed
 }
