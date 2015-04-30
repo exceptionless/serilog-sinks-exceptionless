@@ -39,11 +39,12 @@ function Invoke-NuGetPackProj($csproj)
 
 function Invoke-NuGetPackSpec($nuspec, $version)
 {
-    nuget pack $nuspec -Version $version -OutputDirectory ..\..\
+    nuget pack $nuspec -Version $version -OutputDirectory ..\..\ -Verbosity detailed
 }
 
 function Invoke-NuGetPack($version)
 {
+    
     ls src/**/*.csproj |
         Where-Object { -not ($_.Name -like "*net40*") } |
         ForEach-Object { Invoke-NuGetPackProj $_ $version }
