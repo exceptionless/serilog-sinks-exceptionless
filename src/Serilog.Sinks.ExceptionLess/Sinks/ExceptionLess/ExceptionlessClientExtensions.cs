@@ -1,5 +1,6 @@
 ﻿using System;
 using Exceptionless;
+using Serilog.Core;
 using Serilog.Events;
 
 namespace Serilog.Sinks.ExceptionLess {
@@ -7,7 +8,7 @@ namespace Serilog.Sinks.ExceptionLess {
         public static EventBuilder CreateFromLogEvent(this ExceptionlessClient client, LogEvent log) {
             var builder = log.Exception != null 
                 ? client.CreateException(log.Exception)
-                : client.CreateLog(null, log.RenderMessage(), GetLogLevel(log.Level)); // TODO: How can we get the log source?
+                : client.CreateLog(log.GetSource(), log.RenderMessage(), log.GetLevel());
 
             builder.Target.Date = log.Timestamp;
             if (log.Level == LogEventLevel.Fatal)
@@ -23,8 +24,16 @@ namespace Serilog.Sinks.ExceptionLess {
             CreateFromLogEvent(client, log).Submit();
         }
 
-        private static string GetLogLevel(LogEventLevel level) {
-            switch (level) {
+        private static string GetSource(this LogEvent log) {
+            LogEventPropertyValue value;
+            if (log.Properties.TryGetValue(Constants.SourceContextPropertyName, out value) && value != null)
+                return value.ToString();
+
+            return null;
+        }
+
+        private static string GetLevel(this LogEvent log) {
+            switch (log.Level) {
                 case LogEventLevel.Verbose:
                     return "Trace";
                 case LogEventLevel.Debug:
