@@ -9,6 +9,12 @@ Serilog sink to publish to ExceptionLess
 PM> Install-Package Serilog.Sinks.ExceptionLess
 ``` 
 
+Read the Exceptionless configuration
+```csharp
+using Exceptionless;
+ExceptionlessClient.Default.Register();
+```
+
 ```csharp
 Log.Logger = new LoggerConfiguration()
     .Enrich.With(new HttpRequestIdEnricher())
