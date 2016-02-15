@@ -1,7 +1,7 @@
 Serilog.Sinks.Exceptionless
 ===========================
 
-[![Build status](https://ci.appveyor.com/api/projects/status/bvmfe8muijhgkb9j?svg=true)](https://ci.appveyor.com/project/serilog/serilog-sinks-Exceptionless)
+[![Build status](https://ci.appveyor.com/api/projects/status/bvmfe8muijhgkb9j?svg=true)](https://ci.appveyor.com/project/serilog/serilog-sinks-exceptionless)
 
 Serilog sink to publish to Exceptionless
 
