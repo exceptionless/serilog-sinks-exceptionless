@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Serilog.Sinks.ExceptionLess</id>
+    <id>Serilog.Sinks.Exceptionless</id>
     <version>$version$</version>
     <authors>Serilog Contributors</authors>
     <description>The perfect way for .NET apps to write structured log events to Exceptionless.</description>
