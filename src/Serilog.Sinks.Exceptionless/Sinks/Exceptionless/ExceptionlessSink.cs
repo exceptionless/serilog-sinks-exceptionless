@@ -39,7 +39,7 @@ namespace Serilog.Sinks.Exceptionless {
                 if (!String.IsNullOrEmpty(apiKey)) {
                     cfg.ApiKey = apiKey;
                 }
-                if (!String.IsNullOrEmpty(apiKey)) {
+                if (!String.IsNullOrEmpty(serverUrl)) {
                     cfg.ServerUrl = serverUrl;
                 }
             }),
