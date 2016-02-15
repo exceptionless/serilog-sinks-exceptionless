@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Serilog</RootNamespace>
-    <AssemblyName>Serilog.Sinks.ExceptionLess</AssemblyName>
+    <AssemblyName>Serilog.Sinks.Exceptionless</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -62,15 +62,15 @@
     <Compile Include="..\..\assets\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Sinks\ExceptionLess\ExceptionlessClientExtensions.cs" />
-    <Compile Include="Sinks\ExceptionLess\ExceptionLessSink.cs" />
+    <Compile Include="Sinks\Exceptionless\ExceptionlessClientExtensions.cs" />
+    <Compile Include="Sinks\Exceptionless\ExceptionlessSink.cs" />
     <Compile Include="LoggerSinkConfigurationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Serilog.Sinks.ExceptionLess.nuspec" />
+    <None Include="Serilog.Sinks.Exceptionless.nuspec" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
