@@ -58,10 +58,10 @@ namespace Serilog {
         /// <param name="includeProperties">
         /// If false it suppressed sending the Serilog properties to Exceptionless
         /// </param>
-        /// <returns>
         /// <param name="client">
         /// Optional instance of <see cref="ExceptionlessClient"/> to use.
         /// </param>
+        /// <returns>
         /// The <see cref="LoggerConfiguration"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
