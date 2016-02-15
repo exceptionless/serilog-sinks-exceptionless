@@ -15,7 +15,7 @@ namespace Serilog {
         /// The logger configuration.
         /// </param>
         /// <param name="apiKey">
-        /// Required API key that will be used when sending events to the server.
+        /// The API key that will be used when sending events to the server.
         /// </param>
         /// <param name="serverUrl">
         /// Optional URL of the server events will be sent to.
