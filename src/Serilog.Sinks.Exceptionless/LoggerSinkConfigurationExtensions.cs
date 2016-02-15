@@ -52,9 +52,6 @@ namespace Serilog {
         /// <param name="loggerConfiguration">
         /// The logger configuration.
         /// </param>
-        /// <param name="client">
-        /// Optional instance of <see cref="ExceptionlessClient"/> to use.
-        /// </param>
         /// <param name="additionalOperation">
         /// Any additional operation to run against the build exceptions
         /// </param>
@@ -62,20 +59,23 @@ namespace Serilog {
         /// If false it suppressed sending the Serilog properties to Exceptionless
         /// </param>
         /// <returns>
+        /// <param name="client">
+        /// Optional instance of <see cref="ExceptionlessClient"/> to use.
+        /// </param>
         /// The <see cref="LoggerConfiguration"/>.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// </exception>
         public static LoggerConfiguration Exceptionless(
             this LoggerSinkConfiguration loggerConfiguration,
-            ExceptionlessClient client = null,
             Func<EventBuilder, EventBuilder> additionalOperation = null,
-            bool includeProperties = true
+            bool includeProperties = true,
+            ExceptionlessClient client = null
         ) {
             if (loggerConfiguration == null)
                 throw new ArgumentNullException(nameof(loggerConfiguration));
 
-            return loggerConfiguration.Sink(new ExceptionlessSink(client, additionalOperation, includeProperties));
+            return loggerConfiguration.Sink(new ExceptionlessSink(additionalOperation, includeProperties, client));
         }
     }
 }

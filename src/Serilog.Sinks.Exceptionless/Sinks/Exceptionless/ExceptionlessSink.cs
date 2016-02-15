@@ -39,7 +39,7 @@ namespace Serilog.Sinks.Exceptionless {
                 throw new ArgumentNullException(nameof(apiKey));
 
             _client = new ExceptionlessClient(cfg => {
-                if (!String.IsNullOrEmpty(apiKey)) {
+                if (!String.IsNullOrEmpty(apiKey) && apiKey != "API_KEY_HERE") {
                     cfg.ApiKey = apiKey;
                 }
                 if (!String.IsNullOrEmpty(serverUrl)) {
@@ -54,22 +54,19 @@ namespace Serilog.Sinks.Exceptionless {
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionlessSink"/> class.
         /// </summary>
-        /// <param name="client">
-        /// Optional instance of <see cref="ExceptionlessClient"/> to use.
-        /// </param>
-        /// <param name="serverUrl">
-        /// Optional URL of the server events will be sent to.
-        /// </param>
         /// <param name="additionalOperation">
         /// Optional operation to run against the Error Builder before submitting to Exceptionless
         /// </param>
         /// <param name="includeProperties">
         /// If false then the Serilog properties will not be submitted to Exceptionless
         /// </param>
-        public ExceptionlessSink(ExceptionlessClient client = null, Func<EventBuilder, EventBuilder> additionalOperation = null, bool includeProperties = true) {
-            _client = client ?? ExceptionlessClient.Default;
+        /// <param name="client">
+        /// Optional instance of <see cref="ExceptionlessClient"/> to use.
+        /// </param>
+        public ExceptionlessSink(Func<EventBuilder, EventBuilder> additionalOperation = null, bool includeProperties = true, ExceptionlessClient client = null) {
             _additionalOperation = additionalOperation;
             _includeProperties = includeProperties;
+            _client = client ?? ExceptionlessClient.Default;
         }
 
         public void Emit(LogEvent logEvent) {
