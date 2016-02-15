@@ -18,7 +18,7 @@ namespace Serilog.Sinks.Exceptionless {
         /// Initializes a new instance of the <see cref="ExceptionlessSink"/> class.
         /// </summary>
         /// <param name="apiKey">
-        /// Optional API key that will be used when sending events to the server.
+        /// The API key that will be used when sending events to the server.
         /// </param>
         /// <param name="serverUrl">
         /// Optional URL of the server events will be sent to.
@@ -30,28 +30,32 @@ namespace Serilog.Sinks.Exceptionless {
         /// If false then the Serilog properties will not be submitted to Exceptionless
         /// </param>
         public ExceptionlessSink(
-            string apiKey = null,
+            string apiKey,
             string serverUrl = null,
             Func<EventBuilder, EventBuilder> additionalOperation = null,
             bool includeProperties = true
-        ) : this (
-            new ExceptionlessClient(cfg => {
+        ) {
+            if (apiKey == null)
+                throw new ArgumentNullException(nameof(apiKey));
+
+            _client = new ExceptionlessClient(cfg => {
                 if (!String.IsNullOrEmpty(apiKey)) {
                     cfg.ApiKey = apiKey;
                 }
                 if (!String.IsNullOrEmpty(serverUrl)) {
                     cfg.ServerUrl = serverUrl;
                 }
-            }),
-            additionalOperation,
-            includeProperties
-        ) { }
+                cfg.UseInMemoryStorage();
+            });            
+            _additionalOperation = additionalOperation;
+            _includeProperties = includeProperties;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExceptionlessSink"/> class.
         /// </summary>
         /// <param name="client">
-        /// The instance of <see cref="ExceptionlessClient"/> to use.
+        /// Optional instance of <see cref="ExceptionlessClient"/> to use.
         /// </param>
         /// <param name="serverUrl">
         /// Optional URL of the server events will be sent to.
@@ -62,11 +66,8 @@ namespace Serilog.Sinks.Exceptionless {
         /// <param name="includeProperties">
         /// If false then the Serilog properties will not be submitted to Exceptionless
         /// </param>
-        public ExceptionlessSink(ExceptionlessClient client, Func<EventBuilder, EventBuilder> additionalOperation = null, bool includeProperties = true) {
-            if (client == null)
-                throw new ArgumentNullException(nameof(client));
-
-            _client = client;
+        public ExceptionlessSink(ExceptionlessClient client = null, Func<EventBuilder, EventBuilder> additionalOperation = null, bool includeProperties = true) {
+            _client = client ?? ExceptionlessClient.Default;
             _additionalOperation = additionalOperation;
             _includeProperties = includeProperties;
         }
