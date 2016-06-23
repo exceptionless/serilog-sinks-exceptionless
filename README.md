@@ -15,10 +15,11 @@ Exceptionless.ExceptionlessClient.Default.Startup();
 ```
 
 ```csharp
-var log = new LoggerConfiguration()
+Log.Logger = new LoggerConfiguration()
     .WriteTo.Exceptionless(b => b.AddTags("ASP.NET Core Example Logger").AddRequestInfo(HttpContext))
     .CreateLogger();
 
+var log = Log.ForContext<HomeController>();
 log.Information("Info Log that also contains HttpContext request info and default tags");
 ```
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Exceptionless;
 using Serilog.Core;
 using Serilog.Events;
@@ -82,38 +81,14 @@ namespace Serilog.Sinks.Exceptionless {
 
             if (_includeProperties && logEvent.Properties != null) {
                 foreach (var property in logEvent.Properties)
-                    builder.SetProperty(property.Key, FlattenProperties(property.Value));
+                    if (property.Key != Constants.SourceContextPropertyName)
+                        builder.SetProperty(property.Key, property.Value.FlattenProperties());
             }
 
             if (_additionalOperation != null)
                 _additionalOperation(builder);
 
             builder.Submit();
-        }
-
-        /// <summary>
-        /// Removes the structure of <see cref="LogEventPropertyValue"/> implementations introduced
-        /// by Serilog and brings properties closer to the structure of the original object.
-        /// This enables Exceptionless to display the properties in a nicer way.
-        /// </summary>
-        private static object FlattenProperties(LogEventPropertyValue value) {
-            var scalar = value as ScalarValue;
-            if (scalar != null)
-                return scalar.Value;
-
-            var sequence = value as SequenceValue;
-            if (sequence != null)
-                return sequence.Elements.Select(FlattenProperties);
-
-            var structure = value as StructureValue;
-            if (structure != null)
-                return structure.Properties.ToDictionary(p => p.Name, p => FlattenProperties(p.Value));
-
-            var dictionary = value as DictionaryValue;
-            if (dictionary != null)
-                return dictionary.Elements.ToDictionary(p => p.Key.Value, p => FlattenProperties(p.Value));
-
-            return value;
         }
     }
 }
