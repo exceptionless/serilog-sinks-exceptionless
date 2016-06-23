@@ -6,12 +6,25 @@
     "packOptions": {
         "tags": [ "serilog", "Exceptionless", "logging" ],
         "projectUrl": "http://serilog.net",
+        "releaseNotes": "https://github.com/serilog/serilog-sinks-exceptionless/releases",
         "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
-        "iconUrl": "http://serilog.net/images/serilog-sink-nuget.png"
+        "iconUrl": "http://serilog.net/images/serilog-sink-nuget.png",
+        "repository": {
+            "type": "git",
+            "url": "https://github.com/serilog/serilog-sinks-exceptionless"
+        },
+        "files": {
+            "include": [ "readme.txt" ]
+        }
     },
 
     "buildOptions": {
         "keyFile": "../../assets/Serilog.snk",
+        "nowarn": [
+            "CS1591"
+        ],
+        "optimize": true,
+        "warningsAsErrors": true,
         "xmlDoc": true
     },
     "dependencies": {
