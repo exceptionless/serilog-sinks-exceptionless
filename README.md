@@ -16,9 +16,10 @@ Exceptionless.ExceptionlessClient.Default.Startup();
 
 ```csharp
 var log = new LoggerConfiguration()
-    .Enrich.With(new HttpRequestIdEnricher())
-    .WriteTo.Exceptionless(b => b.AddTags("Cart").AddObject(order).AddRequestInfo())
+    .WriteTo.Exceptionless(b => b.AddTags("ASP.NET Core Example Logger").AddRequestInfo(HttpContext))
     .CreateLogger();
+
+log.Information("Info Log that also contains HttpContext request info and default tags");
 ```
 
 * [Documentation](https://github.com/serilog/serilog/wiki)
