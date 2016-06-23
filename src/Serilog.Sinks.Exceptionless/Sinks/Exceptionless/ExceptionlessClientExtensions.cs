@@ -1,5 +1,6 @@
 ﻿using System;
 using Exceptionless;
+using Exceptionless.Logging;
 using Serilog.Core;
 using Serilog.Events;
 
@@ -24,7 +25,7 @@ namespace Serilog.Sinks.Exceptionless {
             CreateFromLogEvent(client, log).Submit();
         }
 
-        private static string GetSource(this LogEvent log) {
+        internal static string GetSource(this LogEvent log) {
             LogEventPropertyValue value;
             if (log.Properties.TryGetValue(Constants.SourceContextPropertyName, out value) && value != null)
                 return value.ToString();
@@ -32,22 +33,23 @@ namespace Serilog.Sinks.Exceptionless {
             return null;
         }
 
-        private static string GetLevel(this LogEvent log) {
+        internal static LogLevel GetLevel(this LogEvent log) {
             switch (log.Level) {
                 case LogEventLevel.Verbose:
-                    return "Trace";
+                    return LogLevel.Trace;
                 case LogEventLevel.Debug:
-                    return "Debug";
+                    return LogLevel.Debug;
                 case LogEventLevel.Information:
-                    return "Info";
+                    return LogLevel.Info;
                 case LogEventLevel.Warning:
-                    return "Warn";
+                    return LogLevel.Warn;
                 case LogEventLevel.Error:
+                    return LogLevel.Error;
                 case LogEventLevel.Fatal:
-                    return "Error";
+                    return LogLevel.Fatal;
+                default:
+                    return LogLevel.Other;
             }
-
-            return null;
         }
     }
 }

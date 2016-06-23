@@ -38,15 +38,16 @@ namespace Serilog.Sinks.Exceptionless {
             if (apiKey == null)
                 throw new ArgumentNullException(nameof(apiKey));
 
-            _client = new ExceptionlessClient(cfg => {
-                if (!String.IsNullOrEmpty(apiKey) && apiKey != "API_KEY_HERE") {
-                    cfg.ApiKey = apiKey;
-                }
-                if (!String.IsNullOrEmpty(serverUrl)) {
-                    cfg.ServerUrl = serverUrl;
-                }
-                cfg.UseInMemoryStorage();
-            });            
+            _client = new ExceptionlessClient(config => {
+                if (!String.IsNullOrEmpty(apiKey) && apiKey != "API_KEY_HERE")
+                    config.ApiKey = apiKey;
+
+                if (!String.IsNullOrEmpty(serverUrl))
+                    config.ServerUrl = serverUrl;
+
+                config.UseInMemoryStorage();
+            }); 
+                       
             _additionalOperation = additionalOperation;
             _includeProperties = includeProperties;
         }
@@ -71,6 +72,10 @@ namespace Serilog.Sinks.Exceptionless {
 
         public void Emit(LogEvent logEvent) {
             if (logEvent == null || !_client.Configuration.IsValid)
+                return;
+
+            var minLogLevel = _client.Configuration.Settings.GetMinLogLevel(logEvent.GetSource());
+            if (logEvent.GetLevel() < minLogLevel)
                 return;
 
             var builder = _client.CreateFromLogEvent(logEvent);
