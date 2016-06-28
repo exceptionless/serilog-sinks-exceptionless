@@ -1,5 +1,5 @@
 ﻿{
-    "version": "3.0.0-rc-*",
+    "version": "3.0.0-*",
     "description": "Exceptionless sink for Serilog",
     "authors": [ "Serilog Contributors" ],
 
@@ -28,8 +28,8 @@
         "xmlDoc": true
     },
     "dependencies": {
-        "Exceptionless.Signed": "4.0.1862-beta", 
-        "Serilog": "2.0.0-rc-640"
+        "Exceptionless.Signed": "4.0.1879",
+        "Serilog": "2.0.0"
     },
     "compilationOptions": {
         "keyFile": "../../assets/Serilog.snk"
