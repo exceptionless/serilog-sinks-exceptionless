@@ -28,8 +28,8 @@
         "xmlDoc": true
     },
     "dependencies": {
-        "Exceptionless.Signed": "4.0.1879",
-        "Serilog": "2.0.0"
+      "Exceptionless.Signed": "4.0.1918",
+      "Serilog": "2.3.0"
     },
     "compilationOptions": {
         "keyFile": "../../assets/Serilog.snk"

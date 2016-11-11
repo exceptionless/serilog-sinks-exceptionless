@@ -10,7 +10,7 @@ namespace Serilog.Sinks.Exceptionless {
         public static EventBuilder CreateFromLogEvent(this ExceptionlessClient client, LogEvent log) {
             string message = log.RenderMessage();
 
-            var builder = log.Exception != null 
+            var builder = log.Exception != null
                 ? client.CreateException(log.Exception)
                 : client.CreateLog(log.GetSource(), message, log.GetLevel());
 
