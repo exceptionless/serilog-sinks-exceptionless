@@ -45,8 +45,8 @@ namespace Serilog.Sinks.Exceptionless {
                     config.ServerUrl = serverUrl;
 
                 config.UseInMemoryStorage();
-            }); 
-                       
+            });
+
             _additionalOperation = additionalOperation;
             _includeProperties = includeProperties;
         }
