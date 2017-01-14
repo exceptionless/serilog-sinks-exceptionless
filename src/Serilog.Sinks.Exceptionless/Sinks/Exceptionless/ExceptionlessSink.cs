@@ -45,6 +45,7 @@ namespace Serilog.Sinks.Exceptionless {
                     config.ServerUrl = serverUrl;
 
                 config.UseInMemoryStorage();
+                config.UseLogger(new SelfLogLogger());
             });
 
             _additionalOperation = additionalOperation;
@@ -66,7 +67,12 @@ namespace Serilog.Sinks.Exceptionless {
         public ExceptionlessSink(Func<EventBuilder, EventBuilder> additionalOperation = null, bool includeProperties = true, ExceptionlessClient client = null) {
             _additionalOperation = additionalOperation;
             _includeProperties = includeProperties;
-            _client = client ?? ExceptionlessClient.Default;
+            if (client != null) {
+                _client = client;
+            } else {
+                _client = ExceptionlessClient.Default;
+                _client.Configuration.UseLogger(new SelfLogLogger());
+            }
         }
 
         public void Emit(LogEvent logEvent) {
