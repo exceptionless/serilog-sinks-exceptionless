@@ -69,7 +69,8 @@ namespace Serilog.Sinks.Exceptionless {
             _includeProperties = includeProperties;
             if (client != null) {
                 _client = client;
-            } else {
+            }
+            else {
                 _client = ExceptionlessClient.Default;
                 _client.Configuration.UseLogger(new SelfLogLogger());
             }
