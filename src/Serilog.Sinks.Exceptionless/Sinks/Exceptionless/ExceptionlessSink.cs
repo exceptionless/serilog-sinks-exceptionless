@@ -7,7 +7,7 @@ namespace Serilog.Sinks.Exceptionless {
     /// <summary>
     /// Exceptionless Sink
     /// </summary>
-    public class ExceptionlessSink : ILogEventSink {
+    public class ExceptionlessSink : ILogEventSink, IDisposable {
         private readonly Func<EventBuilder, EventBuilder> _additionalOperation;
         private readonly bool _includeProperties;
 
@@ -89,6 +89,10 @@ namespace Serilog.Sinks.Exceptionless {
                 _additionalOperation(builder);
 
             builder.Submit();
+        }
+
+        void IDisposable.Dispose() {
+            _client?.ProcessQueue();
         }
     }
 }
