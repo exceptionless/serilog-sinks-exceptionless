@@ -1,5 +1,6 @@
 ﻿using System;
 using Exceptionless;
+using Exceptionless.Dependency;
 using Exceptionless.Logging;
 using Serilog.Core;
 using Serilog.Events;
@@ -70,7 +71,7 @@ namespace Serilog.Sinks.Exceptionless {
             _includeProperties = includeProperties;
             _client = client ?? ExceptionlessClient.Default;
 
-            if (_client.Configuration.Resolver.Resolve(typeof(IExceptionlessLog)) is NullExceptionlessLog) {
+            if (_client.Configuration.Resolver.HasDefaultRegistration<IExceptionlessLog, NullExceptionlessLog>()) {
                 _client.Configuration.UseLogger(new SelfLogLogger());
             }
         }
