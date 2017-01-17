@@ -1,5 +1,7 @@
 ﻿using System;
 using Exceptionless;
+using Exceptionless.Dependency;
+using Exceptionless.Logging;
 using Serilog.Core;
 using Serilog.Events;
 
@@ -45,6 +47,7 @@ namespace Serilog.Sinks.Exceptionless {
                     config.ServerUrl = serverUrl;
 
                 config.UseInMemoryStorage();
+                config.UseLogger(new SelfLogLogger());
             });
 
             _additionalOperation = additionalOperation;
@@ -67,6 +70,10 @@ namespace Serilog.Sinks.Exceptionless {
             _additionalOperation = additionalOperation;
             _includeProperties = includeProperties;
             _client = client ?? ExceptionlessClient.Default;
+
+            if (_client.Configuration.Resolver.HasDefaultRegistration<IExceptionlessLog, NullExceptionlessLog>()) {
+                _client.Configuration.UseLogger(new SelfLogLogger());
+            }
         }
 
         public void Emit(LogEvent logEvent) {
