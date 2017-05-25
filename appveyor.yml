@@ -1,6 +1,6 @@
 version: '{build}'
 skip_tags: true
-image: Visual Studio 2015
+image: Visual Studio 2017
 configuration: Release
 build_script:
 - ps: ./Build.ps1
@@ -21,4 +21,3 @@ deploy:
   tag: v$(appveyor_build_version)
   on:
     branch: master
-    
