@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Description>Exceptionless sink for Serilog</Description>
-    <VersionPrefix>3.0.3</VersionPrefix>
+    <VersionPrefix>3.0.4</VersionPrefix>
     <Authors>Serilog Contributors</Authors>
     <TargetFrameworks>net45;netstandard1.2</TargetFrameworks>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
@@ -24,6 +24,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="project.lock.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="readme.txt">
       <Pack>true</Pack>
     </None>
@@ -31,7 +35,7 @@
 
   <ItemGroup>
     <PackageReference Include="Exceptionless.Signed" Version="4.0.1951" />
-    <PackageReference Include="Serilog" Version="2.4.0" />
+    <PackageReference Include="Serilog" Version="2.5.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">

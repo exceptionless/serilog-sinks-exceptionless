@@ -92,9 +92,7 @@ namespace Serilog.Sinks.Exceptionless {
                         builder.SetProperty(property.Key, property.Value.FlattenProperties());
             }
 
-            if (_additionalOperation != null)
-                _additionalOperation(builder);
-
+            _additionalOperation?.Invoke(builder);
             builder.Submit();
         }
 

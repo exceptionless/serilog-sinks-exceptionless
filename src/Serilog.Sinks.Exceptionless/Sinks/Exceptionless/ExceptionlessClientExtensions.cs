@@ -29,8 +29,7 @@ namespace Serilog.Sinks.Exceptionless {
         }
 
         internal static string GetSource(this LogEvent log) {
-            LogEventPropertyValue value;
-            if (log.Properties.TryGetValue(Constants.SourceContextPropertyName, out value))
+            if (log.Properties.TryGetValue(Constants.SourceContextPropertyName, out LogEventPropertyValue value))
                 return value.FlattenProperties()?.ToString();
 
             return null;
@@ -64,12 +63,10 @@ namespace Serilog.Sinks.Exceptionless {
             if (value == null)
                 return null;
 
-            var scalar = value as ScalarValue;
-            if (scalar != null)
+            if (value is ScalarValue scalar)
                 return scalar.Value;
 
-            var sequence = value as SequenceValue;
-            if (sequence != null) {
+            if (value is SequenceValue sequence) {
                 var flattenedProperties = new List<object>(sequence.Elements.Count);
                 foreach (var element in sequence.Elements)
                     flattenedProperties.Add(element.FlattenProperties());
@@ -77,8 +74,7 @@ namespace Serilog.Sinks.Exceptionless {
                 return flattenedProperties;
             }
 
-            var structure = value as StructureValue;
-            if (structure != null) {
+            if (value is StructureValue structure) {
                 var flattenedProperties = new Dictionary<string, object>(structure.Properties.Count);
                 foreach (var property in structure.Properties)
                     flattenedProperties.Add(property.Name, property.Value.FlattenProperties());
@@ -86,8 +82,7 @@ namespace Serilog.Sinks.Exceptionless {
                 return flattenedProperties;
             }
 
-            var dictionary = value as DictionaryValue;
-            if (dictionary != null) {
+            if (value is DictionaryValue dictionary) {
                 var flattenedProperties = new Dictionary<object, object>(dictionary.Elements.Count);
                 foreach (var element in dictionary.Elements)
                     flattenedProperties.Add(element.Key.Value, element.Value.FlattenProperties());
