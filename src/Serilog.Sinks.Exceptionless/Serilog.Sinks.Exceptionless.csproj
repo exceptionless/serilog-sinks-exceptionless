@@ -4,7 +4,7 @@
     <Description>Exceptionless sink for Serilog</Description>
     <VersionPrefix>3.0.4</VersionPrefix>
     <Authors>Serilog Contributors</Authors>
-    <TargetFrameworks>net45;netstandard1.2</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard1.2;netstandard2.0</TargetFrameworks>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Exceptionless.Signed" Version="4.0.1951" />
+    <PackageReference Include="Exceptionless.Signed" Version="4.1.1967-pre" />
     <PackageReference Include="Serilog" Version="2.5.0" />
   </ItemGroup>
 
