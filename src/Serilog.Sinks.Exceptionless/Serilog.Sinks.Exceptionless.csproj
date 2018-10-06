@@ -34,8 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Exceptionless.Signed" Version="4.1.1972" />
-    <PackageReference Include="Serilog" Version="2.5.0" />
+    <PackageReference Include="Exceptionless.Signed" Version="4.3.2012" />
+    <PackageReference Include="Serilog" Version="2.7.1" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
