@@ -16,7 +16,7 @@ Exceptionless.ExceptionlessClient.Default.Startup();
 
 ```csharp
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.Exceptionless(b => b.AddTags("ASP.NET Core Example Logger").AddRequestInfo(HttpContext))
+    .WriteTo.Exceptionless(b => b.AddTags("ASP.NET Core Example Logger"))
     .CreateLogger();
 
 var log = Log.ForContext<HomeController>();
