@@ -21,6 +21,8 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/serilog/serilog-sinks-exceptionless</RepositoryUrl>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <Version>3.1.2</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Exceptionless" Version="4.4.0" />
+    <PackageReference Include="Exceptionless" Version="4.4.1" />
     <PackageReference Include="Serilog" Version="2.9.0" />
   </ItemGroup>
 
