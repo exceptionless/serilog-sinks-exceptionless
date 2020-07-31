@@ -21,8 +21,6 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/serilog/serilog-sinks-exceptionless</RepositoryUrl>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <Version>3.1.2</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
