@@ -2,6 +2,8 @@
 using Exceptionless;
 using Exceptionless.Dependency;
 using Exceptionless.Logging;
+using Exceptionless.Models;
+using Exceptionless.Models.Data;
 using Serilog.Core;
 using Serilog.Events;
 
@@ -88,8 +90,44 @@ namespace Serilog.Sinks.Exceptionless {
 
             if (_includeProperties && logEvent.Properties != null) {
                 foreach (var property in logEvent.Properties)
-                    if (property.Key != Constants.SourceContextPropertyName)
-                        builder.SetProperty(property.Key, property.Value.FlattenProperties());
+                {
+                    if (property.Key == Constants.SourceContextPropertyName)
+                    {
+                        continue;
+                    }
+                    else if (property.Key == Event.KnownDataKeys.UserInfo)
+                    {
+                        if (property.Value is StructureValue structure && structure.TypeTag == nameof(UserInfo))
+                        {
+                            var userInfo = new UserInfo();
+                            var identity = structure.Properties.SequenceToObjectValue<string>(nameof(userInfo.Identity), null);
+                            var name = structure.Properties.SequenceToObjectValue<string>(nameof(userInfo.Name), null);
+                            if (!string.IsNullOrWhiteSpace(identity) || !string.IsNullOrWhiteSpace(name))
+                            {
+                                builder.SetUserIdentity(identity, name);
+                                continue;
+                            }
+                        }
+                    }
+                    else if (property.Key == Event.KnownDataKeys.UserDescription)
+                    {
+                        if (property.Value is StructureValue structure && structure.TypeTag == nameof(UserDescription))
+                        {
+                            var userDescription = new UserDescription();
+                            var emailAddress = structure.Properties.SequenceToObjectValue<string>(nameof(userDescription.EmailAddress), null);
+                            var description = structure.Properties.SequenceToObjectValue<string>(nameof(userDescription.Description), null);
+
+                            if (!string.IsNullOrWhiteSpace(emailAddress) || !string.IsNullOrWhiteSpace(description))
+                            {
+                                builder.SetUserDescription(emailAddress, description);
+                                continue;
+                            }
+                          
+                        }
+                    }
+
+                    builder.SetProperty(property.Key, property.Value.FlattenProperties());
+                }
             }
 
             _additionalOperation?.Invoke(builder);
