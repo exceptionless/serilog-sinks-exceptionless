@@ -36,11 +36,13 @@ SetUserIdentity
 
         public Task Invoke(HttpContext context)
         {
-            if (context.User.Identity.IsAuthenticated)
+            var identity = context.User.Identity;
+
+            if (identity.IsAuthenticated)
             {
-                LogContext.PushProperty(Exceptionless.Models.Event.KnownDataKeys.UserInfo, new Exceptionless.Models.Data.UserInfo(context.User.Identity.GetClaimValue("email"), context.User.Identity.GetClaimValue("username")), true);
+                LogContext.PushProperty(Exceptionless.Models.Event.KnownDataKeys.UserInfo, new Exceptionless.Models.Data.UserInfo(identity.GetClaimValue("email"), identity.GetClaimValue("username")), true);
                 //or
-                //LogContext.PushProperty(Exceptionless.Models.Event.KnownDataKeys.UserDescription, new Exceptionless.Models.Data.UserDescription(context.User.Identity.GetClaimValue("email"), context.User.Identity.GetClaimValue("username")), true);
+                //LogContext.PushProperty(Exceptionless.Models.Event.KnownDataKeys.UserDescription, new Exceptionless.Models.Data.UserDescription(identity.GetClaimValue("email"), identity.GetClaimValue("username")), true);
             }
 
             return next(context);

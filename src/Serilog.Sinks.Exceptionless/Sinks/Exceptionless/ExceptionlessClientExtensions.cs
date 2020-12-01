@@ -6,7 +6,8 @@ using Exceptionless.Logging;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Serilog.Sinks.Exceptionless {
+namespace Serilog.Sinks.Exceptionless
+{
     public static class ExceptionlessClientExtensions {
         public static EventBuilder CreateFromLogEvent(this ExceptionlessClient client, LogEvent log) {
             string message = log.RenderMessage();
@@ -106,14 +107,14 @@ namespace Serilog.Sinks.Exceptionless {
         {
             var lProperty = properties.Where(a => a.Name.Equals(key, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 
-            try
+            var value = lProperty.Value.FlattenProperties();
+
+            if (value is T tValue)
             {
-                return (T)lProperty.Value.FlattenProperties();
+                return tValue;
             }
-            catch
-            {
-                return defaultValue;
-            }
+
+            return defaultValue;
         }
     }
 }
