@@ -97,11 +97,10 @@ namespace Serilog.Sinks.Exceptionless {
                     }
                     else if (property.Key == Event.KnownDataKeys.UserInfo)
                     {
-                        if (property.Value is StructureValue structure && structure.TypeTag == nameof(UserInfo))
+                        if (property.Value is StructureValue structure && !string.IsNullOrWhiteSpace(structure.TypeTag) && structure.TypeTag.Equals("UserInfo", StringComparison.OrdinalIgnoreCase))
                         {
-                            var userInfo = new UserInfo();
-                            var identity = structure.Properties.SequenceToObjectValue<string>(nameof(userInfo.Identity), null);
-                            var name = structure.Properties.SequenceToObjectValue<string>(nameof(userInfo.Name), null);
+                            var identity = structure.Properties.SequenceToObjectValue<string>("Identity", null);
+                            var name = structure.Properties.SequenceToObjectValue<string>("Name", null);
                             if (!string.IsNullOrWhiteSpace(identity) || !string.IsNullOrWhiteSpace(name))
                             {
                                 builder.SetUserIdentity(identity, name);
@@ -111,11 +110,10 @@ namespace Serilog.Sinks.Exceptionless {
                     }
                     else if (property.Key == Event.KnownDataKeys.UserDescription)
                     {
-                        if (property.Value is StructureValue structure && structure.TypeTag == nameof(UserDescription))
+                        if (property.Value is StructureValue structure && !string.IsNullOrWhiteSpace(structure.TypeTag) && structure.TypeTag.Equals("UserDescription", StringComparison.OrdinalIgnoreCase))
                         {
-                            var userDescription = new UserDescription();
-                            var emailAddress = structure.Properties.SequenceToObjectValue<string>(nameof(userDescription.EmailAddress), null);
-                            var description = structure.Properties.SequenceToObjectValue<string>(nameof(userDescription.Description), null);
+                            var emailAddress = structure.Properties.SequenceToObjectValue<string>("EmailAddress", null);
+                            var description = structure.Properties.SequenceToObjectValue<string>("Description", null);
 
                             if (!string.IsNullOrWhiteSpace(emailAddress) || !string.IsNullOrWhiteSpace(description))
                             {
