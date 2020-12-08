@@ -34,6 +34,36 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 ```
 
+SetUserIdentity
+```csharp
+ public class LogUserNameMiddleware
+    {
+        private readonly RequestDelegate next;
+
+        public LogUserNameMiddleware(RequestDelegate next)
+        {
+            this.next = next;
+        }
+
+        public Task Invoke(HttpContext context)
+        {
+            var identity = context.User.Identity;
+
+            if (identity.IsAuthenticated)
+            {
+                LogContext.PushProperty(Exceptionless.Models.Event.KnownDataKeys.UserInfo, new Exceptionless.Models.Data.UserInfo(identity.GetClaimValue("email"), identity.GetClaimValue("username")), true);
+                //or
+                //LogContext.PushProperty(Exceptionless.Models.Event.KnownDataKeys.UserDescription, new Exceptionless.Models.Data.UserDescription(identity.GetClaimValue("email"), identity.GetClaimValue("username")), true);
+            }
+
+            return next(context);
+        }
+    }
+
+    app.UseMiddleware<LogUserNameMiddleware>();
+
+```
+
 * [Documentation](https://github.com/serilog/serilog/wiki)
 
 Copyright &copy; 2017 Serilog Contributors - Provided under the [Apache License, Version 2.0](http://apache.org/licenses/LICENSE-2.0.html).

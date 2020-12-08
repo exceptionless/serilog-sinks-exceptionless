@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Exceptionless;
 using Exceptionless.Logging;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Serilog.Sinks.Exceptionless {
+namespace Serilog.Sinks.Exceptionless
+{
     public static class ExceptionlessClientExtensions {
         public static EventBuilder CreateFromLogEvent(this ExceptionlessClient client, LogEvent log) {
             string message = log.RenderMessage();
@@ -91,6 +93,28 @@ namespace Serilog.Sinks.Exceptionless {
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// SequenceToObjectValue
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="properties"></param>
+        /// <param name="key"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        internal static T SequenceToObjectValue<T>(this IReadOnlyList<LogEventProperty> properties,string key, T defaultValue)
+        {
+            var lProperty = properties.Where(a => a.Name.Equals(key, StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
+
+            var value = lProperty.Value.FlattenProperties();
+
+            if (value is T tValue)
+            {
+                return tValue;
+            }
+
+            return defaultValue;
         }
     }
 }
