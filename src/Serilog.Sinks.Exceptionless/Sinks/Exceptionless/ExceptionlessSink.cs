@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Exceptionless;
 using Exceptionless.Dependency;
 using Exceptionless.Logging;
@@ -89,42 +90,38 @@ namespace Serilog.Sinks.Exceptionless {
             var builder = _client.CreateFromLogEvent(logEvent);
 
             if (_includeProperties && logEvent.Properties != null) {
-                foreach (var property in logEvent.Properties)
+                foreach (var prop in logEvent.Properties)
                 {
-                    if (property.Key == Constants.SourceContextPropertyName)
+                    switch (prop.Key)
                     {
-                        continue;
-                    }
-                    else if (property.Key == Event.KnownDataKeys.UserInfo)
-                    {
-                        if (property.Value is StructureValue structure && !string.IsNullOrWhiteSpace(structure.TypeTag) && structure.TypeTag.Equals("UserInfo", StringComparison.OrdinalIgnoreCase))
-                        {
-                            var identity = structure.Properties.SequenceToObjectValue<string>("Identity", null);
-                            var name = structure.Properties.SequenceToObjectValue<string>("Name", null);
-                            if (!string.IsNullOrWhiteSpace(identity) || !string.IsNullOrWhiteSpace(name))
-                            {
+                        case Constants.SourceContextPropertyName:
+                            continue;
+                        case Event.KnownDataKeys.UserInfo when prop.Value is StructureValue uis && String.Equals(nameof(UserInfo), uis.TypeTag):
+                            var userInfo = uis.FlattenProperties() as Dictionary<string, object>;
+                            if (userInfo is null)
+                                continue;
+
+                            // UserDescription Data property is currently ignored.
+                            string identity = userInfo[nameof(UserInfo.Identity)] as string;
+                            string name = userInfo[nameof(UserInfo.Name)] as string;
+                            if (!String.IsNullOrWhiteSpace(identity) || !String.IsNullOrWhiteSpace(name))
                                 builder.SetUserIdentity(identity, name);
+                            break;
+                        case Event.KnownDataKeys.UserDescription when prop.Value is StructureValue uds && String.Equals(nameof(UserDescription), uds.TypeTag):
+                            var userDescription = uds.FlattenProperties() as Dictionary<string, object>;
+                            if (userDescription is null)
                                 continue;
-                            }
-                        }
-                    }
-                    else if (property.Key == Event.KnownDataKeys.UserDescription)
-                    {
-                        if (property.Value is StructureValue structure && !string.IsNullOrWhiteSpace(structure.TypeTag) && structure.TypeTag.Equals("UserDescription", StringComparison.OrdinalIgnoreCase))
-                        {
-                            var emailAddress = structure.Properties.SequenceToObjectValue<string>("EmailAddress", null);
-                            var description = structure.Properties.SequenceToObjectValue<string>("Description", null);
 
-                            if (!string.IsNullOrWhiteSpace(emailAddress) || !string.IsNullOrWhiteSpace(description))
-                            {
+                            // UserDescription Data property is currently ignored.
+                            string emailAddress = userDescription[nameof(UserDescription.EmailAddress)] as string;
+                            string description = userDescription[nameof(UserDescription.Description)] as string;
+                            if (!String.IsNullOrWhiteSpace(emailAddress) || !String.IsNullOrWhiteSpace(description))
                                 builder.SetUserDescription(emailAddress, description);
-                                continue;
-                            }
-                          
-                        }
+                            break;
+                        default: 
+                            builder.SetProperty(prop.Key, prop.Value.FlattenProperties());
+                            break;
                     }
-
-                    builder.SetProperty(property.Key, property.Value.FlattenProperties());
                 }
             }
 
