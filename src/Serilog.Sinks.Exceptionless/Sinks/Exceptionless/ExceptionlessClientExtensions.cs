@@ -5,7 +5,8 @@ using Exceptionless.Logging;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Serilog.Sinks.Exceptionless {
+namespace Serilog.Sinks.Exceptionless
+{
     public static class ExceptionlessClientExtensions {
         public static EventBuilder CreateFromLogEvent(this ExceptionlessClient client, LogEvent log) {
             string message = log.RenderMessage();
