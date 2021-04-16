@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Exceptionless;
 using Exceptionless.Dependency;
 using Exceptionless.Logging;
@@ -13,6 +14,7 @@ namespace Serilog.Sinks.Exceptionless {
     /// Exceptionless Sink
     /// </summary>
     public class ExceptionlessSink : ILogEventSink, IDisposable {
+        private readonly string[] _defaultTags;
         private readonly Func<EventBuilder, EventBuilder> _additionalOperation;
         private readonly bool _includeProperties;
 
@@ -27,6 +29,9 @@ namespace Serilog.Sinks.Exceptionless {
         /// <param name="serverUrl">
         /// Optional URL of the server events will be sent to.
         /// </param>
+        /// <param name="defaultTags">
+        /// Default tags to be added to every log event.
+        /// </param>
         /// <param name="additionalOperation">
         /// Optional operation to run against the Error Builder before submitting to Exceptionless
         /// </param>
@@ -36,6 +41,7 @@ namespace Serilog.Sinks.Exceptionless {
         public ExceptionlessSink(
             string apiKey,
             string serverUrl = null,
+            string[] defaultTags = null,
             Func<EventBuilder, EventBuilder> additionalOperation = null,
             bool includeProperties = true
         ) {
@@ -53,6 +59,7 @@ namespace Serilog.Sinks.Exceptionless {
                 config.UseLogger(new SelfLogLogger());
             });
 
+            _defaultTags = defaultTags;
             _additionalOperation = additionalOperation;
             _includeProperties = includeProperties;
         }
@@ -89,6 +96,10 @@ namespace Serilog.Sinks.Exceptionless {
 
             var builder = _client.CreateFromLogEvent(logEvent);
 
+            if (_defaultTags != null && _defaultTags.Any()) {
+                builder.AddTags(_defaultTags);
+            }
+            
             if (_includeProperties && logEvent.Properties != null) {
                 foreach (var prop in logEvent.Properties)
                 {
