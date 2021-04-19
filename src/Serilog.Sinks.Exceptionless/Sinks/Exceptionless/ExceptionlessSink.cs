@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Exceptionless;
 using Exceptionless.Dependency;
 using Exceptionless.Logging;
@@ -96,10 +95,8 @@ namespace Serilog.Sinks.Exceptionless {
 
             var builder = _client.CreateFromLogEvent(logEvent);
 
-            if (_defaultTags != null && _defaultTags.Any()) {
-                builder.AddTags(_defaultTags);
-            }
-            
+            builder.AddTags(_defaultTags);
+
             if (_includeProperties && logEvent.Properties != null) {
                 foreach (var prop in logEvent.Properties)
                 {
