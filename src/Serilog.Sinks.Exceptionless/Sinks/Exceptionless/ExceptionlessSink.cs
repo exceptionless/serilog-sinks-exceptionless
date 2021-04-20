@@ -75,7 +75,11 @@ namespace Serilog.Sinks.Exceptionless {
         /// <param name="client">
         /// Optional instance of <see cref="ExceptionlessClient"/> to use.
         /// </param>
-        public ExceptionlessSink(Func<EventBuilder, EventBuilder> additionalOperation = null, bool includeProperties = true, ExceptionlessClient client = null) {
+        public ExceptionlessSink(
+            Func<EventBuilder, EventBuilder> additionalOperation = null, 
+            bool includeProperties = true, 
+            ExceptionlessClient client = null
+        ) {
             _additionalOperation = additionalOperation;
             _includeProperties = includeProperties;
             _client = client ?? ExceptionlessClient.Default;
@@ -93,9 +97,7 @@ namespace Serilog.Sinks.Exceptionless {
             if (logEvent.GetLevel() < minLogLevel)
                 return;
 
-            var builder = _client.CreateFromLogEvent(logEvent);
-
-            builder.AddTags(_defaultTags);
+            var builder = _client.CreateFromLogEvent(logEvent).AddTags(_defaultTags);
 
             if (_includeProperties && logEvent.Properties != null) {
                 foreach (var prop in logEvent.Properties)

@@ -26,6 +26,7 @@ namespace SampleWeb
             services.AddAuthorization();
             services.AddControllers();
             services.AddHttpContextAccessor();
+            services.AddExceptionless("API_KEY");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,7 +35,7 @@ namespace SampleWeb
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
 
-            app.UseExceptionless("API_KEY");
+            app.UseExceptionless();
             app.UseSerilogRequestLogging();
             app.UseHttpsRedirection();
             app.UseRouting();

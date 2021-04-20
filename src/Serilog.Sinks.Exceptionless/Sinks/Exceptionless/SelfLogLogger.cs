@@ -24,8 +24,7 @@ namespace Serilog.Sinks.Exceptionless {
             SelfLog.WriteLine("Trace: {0}, source: {1}", message, source);
         }
 
-        public void Flush() {
-        }
+        public void Flush() { }
 
         public LogLevel MinimumLogLevel { get; set; }
     }
