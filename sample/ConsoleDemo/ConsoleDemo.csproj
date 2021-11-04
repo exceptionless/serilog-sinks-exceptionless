@@ -2,6 +2,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFrameworks>net50</TargetFrameworks>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\src\Serilog.Sinks.Exceptionless\Serilog.Sinks.Exceptionless.csproj" />
