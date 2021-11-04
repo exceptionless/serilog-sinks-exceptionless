@@ -16,7 +16,7 @@
     <PackageReleaseNotes>https://github.com/exceptionless/serilog-sinks-exceptionless/releases</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/exceptionless/serilog-sinks-exceptionless</PackageProjectUrl>
     <PackageIcon>serilog-sink-nuget.png</PackageIcon>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageOutputPath>$(SolutionDir)artifacts</PackageOutputPath>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -70,7 +70,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(SolutionDir)LICENSE" Pack="true" Visible="false" PackagePath="$(PackageLicenseFile)" />
+    <None Include="$(SolutionDir)LICENSE.txt" Pack="true" Visible="false" PackagePath="$(PackageLicenseFile)" />
     <None Include="$(SolutionDir)assets/serilog-sink-nuget.png" Pack="true" PackagePath="$(PackageIcon)" />
   </ItemGroup>
 </Project>
