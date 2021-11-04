@@ -1,31 +1,53 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Authors>Serilog Contributors,Exceptionless</Authors>
     <Description>Exceptionless sink for Serilog</Description>
-    <VersionPrefix>3.1.4</VersionPrefix>
-    <Authors>Serilog Contributors</Authors>
-    <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
+    <AssemblyName>Serilog.Sinks.Exceptionless</AssemblyName>
+
+    <MinVerSkip Condition="'$(Configuration)' == 'Debug'">true</MinVerSkip>
+    <MinVerTagPrefix>v</MinVerTagPrefix>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyName>Serilog.Sinks.Exceptionless</AssemblyName>
-    <AssemblyOriginatorKeyFile>../../assets/Serilog.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>true</SignAssembly>
-    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+
     <PackageId>Serilog.Sinks.Exceptionless</PackageId>
     <PackageTags>serilog;Exceptionless;logging</PackageTags>
-    <PackageReleaseNotes>https://github.com/serilog/serilog-sinks-exceptionless/releases</PackageReleaseNotes>
-    <PackageIconUrl>http://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
-    <PackageProjectUrl>http://serilog.net</PackageProjectUrl>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageReleaseNotes>https://github.com/exceptionless/serilog-sinks-exceptionless/releases</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/exceptionless/serilog-sinks-exceptionless</PackageProjectUrl>
+    <PackageIcon>serilog-sink-nuget.png</PackageIcon>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageOutputPath>$(SolutionDir)artifacts</PackageOutputPath>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/serilog/serilog-sinks-exceptionless</RepositoryUrl>
+    <RepositoryUrl>https://github.com/exceptionless/serilog-sinks-exceptionless</RepositoryUrl>
+
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyProductAttribute>true</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCompanyAttribute>true</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyCopyrightAttribute>true</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyConfigurationAttribute>true</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyVersionAttribute>true</GenerateAssemblyVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>true</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyInformationalVersionAttribute>true</GenerateAssemblyInformationalVersionAttribute>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="project.lock.json" />
-  </ItemGroup>
+   <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Signing">
+    <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+    <AssemblyOriginatorKeyFile>../../assets/Serilog.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
 
   <ItemGroup>
     <None Update="readme.txt">
@@ -36,10 +58,19 @@
   <ItemGroup>
     <PackageReference Include="Exceptionless" Version="4.6.2" />
     <PackageReference Include="Serilog" Version="2.10.0" />
+
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="AsyncFixer" Version="1.5.1" PrivateAssets="All" />
+    <PackageReference Include="MinVer" Version="2.5.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(SolutionDir)LICENSE.txt" Pack="true" Visible="false" PackagePath="$(PackageLicenseFile)" />
+    <None Include="$(SolutionDir)assets/serilog-sink-nuget.png" Pack="true" PackagePath="$(PackageIcon)" />
   </ItemGroup>
 </Project>
