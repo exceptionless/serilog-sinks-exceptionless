@@ -15,8 +15,8 @@
     <PackageTags>serilog;Exceptionless;logging</PackageTags>
     <PackageReleaseNotes>https://github.com/exceptionless/serilog-sinks-exceptionless/releases</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/exceptionless/serilog-sinks-exceptionless</PackageProjectUrl>
-    <PackageIconUrl>http://serilog.net/images/serilog-sink-nuget.png</PackageIconUrl>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageIcon>serilog-sink-nuget.png</PackageIcon>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageOutputPath>$(SolutionDir)artifacts</PackageOutputPath>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -67,5 +67,10 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(SolutionDir)LICENSE" Pack="true" Visible="false" PackagePath="$(PackageLicenseFile)" />
+    <None Include="$(SolutionDir)assets/serilog-sink-nuget.png" Pack="true" PackagePath="$(PackageIcon)" />
   </ItemGroup>
 </Project>
