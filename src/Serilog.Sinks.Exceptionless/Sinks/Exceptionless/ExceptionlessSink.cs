@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Exceptionless;
 using Exceptionless.Dependency;
 using Exceptionless.Logging;
@@ -56,6 +57,9 @@ namespace Serilog.Sinks.Exceptionless {
 
                 config.UseInMemoryStorage();
                 config.UseLogger(new SelfLogLogger());
+
+                var minLogLevel = GetDefaultMinimumLogLevel();
+                config.SetDefaultMinLogLevel(minLogLevel);
             });
 
             _defaultTags = defaultTags;
@@ -82,7 +86,14 @@ namespace Serilog.Sinks.Exceptionless {
         ) {
             _additionalOperation = additionalOperation;
             _includeProperties = includeProperties;
-            _client = client ?? ExceptionlessClient.Default;
+            _client = client;
+            if(_client == null)
+            {
+                _client = ExceptionlessClient.Default;
+
+                var minLogLevel = GetDefaultMinimumLogLevel();
+                _client.Configuration.SetDefaultMinLogLevel(minLogLevel);
+            }
 
             if (_client.Configuration.Resolver.HasDefaultRegistration<IExceptionlessLog, NullExceptionlessLog>()) {
                 _client.Configuration.UseLogger(new SelfLogLogger());
@@ -137,6 +148,15 @@ namespace Serilog.Sinks.Exceptionless {
 
             _additionalOperation?.Invoke(builder);
             builder.Submit();
+        }
+
+        LogLevel GetDefaultMinimumLogLevel()
+        {
+            var globalMin = Enum.GetValues(typeof(LogEventLevel))
+                .Cast<LogEventLevel>()
+                .Where(Log.IsEnabled)
+                .Min();
+            return globalMin.ToLogLevel();
         }
 
         void IDisposable.Dispose() {

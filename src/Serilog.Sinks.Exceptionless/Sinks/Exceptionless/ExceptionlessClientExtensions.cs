@@ -37,22 +37,7 @@ namespace Serilog.Sinks.Exceptionless
         }
 
         internal static LogLevel GetLevel(this LogEvent log) {
-            switch (log.Level) {
-                case LogEventLevel.Verbose:
-                    return LogLevel.Trace;
-                case LogEventLevel.Debug:
-                    return LogLevel.Debug;
-                case LogEventLevel.Information:
-                    return LogLevel.Info;
-                case LogEventLevel.Warning:
-                    return LogLevel.Warn;
-                case LogEventLevel.Error:
-                    return LogLevel.Error;
-                case LogEventLevel.Fatal:
-                    return LogLevel.Fatal;
-                default:
-                    return LogLevel.Other;
-            }
+            return log.Level.ToLogLevel();
         }
 
         /// <summary>
