@@ -32,7 +32,7 @@ namespace Serilog
             if (apiKey == null)
                 throw new ArgumentNullException(nameof(apiKey));
 
-            return loggerConfiguration.Sink(new ExceptionlessSink(apiKey, null, null, additionalOperation, includeProperties), restrictedToMinimumLevel);
+            return loggerConfiguration.Sink(new ExceptionlessSink(apiKey, null, null, additionalOperation, includeProperties, restrictedToMinimumLevel), restrictedToMinimumLevel);
         }
 
         /// <summary>Creates a new Exceptionless sink with the specified <paramref name="apiKey"/>.</summary>
@@ -60,7 +60,7 @@ namespace Serilog
             if (apiKey == null)
                 throw new ArgumentNullException(nameof(apiKey));
 
-            return loggerConfiguration.Sink(new ExceptionlessSink(apiKey, serverUrl, defaultTags, additionalOperation, includeProperties), restrictedToMinimumLevel);
+            return loggerConfiguration.Sink(new ExceptionlessSink(apiKey, serverUrl, defaultTags, additionalOperation, includeProperties, restrictedToMinimumLevel), restrictedToMinimumLevel);
         }
 
         /// <summary>Creates a new Exceptionless sink.</summary>

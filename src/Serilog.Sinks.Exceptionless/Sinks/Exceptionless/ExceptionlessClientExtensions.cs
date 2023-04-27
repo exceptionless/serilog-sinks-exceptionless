@@ -55,6 +55,27 @@ namespace Serilog.Sinks.Exceptionless
             }
         }
 
+        internal static LogLevel GetLevel(this LogEventLevel log)
+        {
+            switch (log)
+            {
+                case LogEventLevel.Verbose:
+                    return LogLevel.Trace;
+                case LogEventLevel.Debug:
+                    return LogLevel.Debug;
+                case LogEventLevel.Information:
+                    return LogLevel.Info;
+                case LogEventLevel.Warning:
+                    return LogLevel.Warn;
+                case LogEventLevel.Error:
+                    return LogLevel.Error;
+                case LogEventLevel.Fatal:
+                    return LogLevel.Fatal;
+                default:
+                    return LogLevel.Other;
+            }
+        }
+
         /// <summary>
         /// Removes the structure of <see cref="LogEventPropertyValue"/> implementations introduced
         /// by Serilog and brings properties closer to the structure of the original object.
