@@ -98,11 +98,11 @@ namespace Serilog.Sinks.Exceptionless {
             if (logEvent == null || !_client.Configuration.IsValid)
                 return;
 
-            var builder = _client.CreateFromLogEvent(logEvent).AddTags(_defaultTags);
-
             var minLogLevel = _client.Configuration.Settings.GetMinLogLevel(logEvent.GetSource());
-            if (logEvent.GetLevel() < minLogLevel)
+            if (logEvent.Level.GetLevel() < minLogLevel)
                 return;
+
+            var builder = _client.CreateFromLogEvent(logEvent).AddTags(_defaultTags);
 
             if (_includeProperties && logEvent.Properties != null) {
                 foreach (var prop in logEvent.Properties)

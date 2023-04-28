@@ -13,7 +13,7 @@ namespace Serilog.Sinks.Exceptionless
 
             var builder = log.Exception != null
                 ? client.CreateException(log.Exception)
-                : client.CreateLog(log.GetSource(), message, log.GetLevel());
+                : client.CreateLog(log.GetSource(), message, log.Level.GetLevel());
 
             builder.Target.Date = log.Timestamp;
             if (log.Level == LogEventLevel.Fatal)
@@ -34,25 +34,6 @@ namespace Serilog.Sinks.Exceptionless
                 return value.FlattenProperties()?.ToString();
 
             return null;
-        }
-
-        internal static LogLevel GetLevel(this LogEvent log) {
-            switch (log.Level) {
-                case LogEventLevel.Verbose:
-                    return LogLevel.Trace;
-                case LogEventLevel.Debug:
-                    return LogLevel.Debug;
-                case LogEventLevel.Information:
-                    return LogLevel.Info;
-                case LogEventLevel.Warning:
-                    return LogLevel.Warn;
-                case LogEventLevel.Error:
-                    return LogLevel.Error;
-                case LogEventLevel.Fatal:
-                    return LogLevel.Fatal;
-                default:
-                    return LogLevel.Other;
-            }
         }
 
         internal static LogLevel GetLevel(this LogEventLevel log)
