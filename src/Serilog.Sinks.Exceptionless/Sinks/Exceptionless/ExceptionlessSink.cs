@@ -37,12 +37,16 @@ namespace Serilog.Sinks.Exceptionless {
         /// <param name="includeProperties">
         /// If false then the Serilog properties will not be submitted to Exceptionless
         /// </param>
+        /// <param name="restrictedToMinimumLevel">
+        /// The minimum log event level required in order to write an event to the sink.
+        /// </param>
         public ExceptionlessSink(
             string apiKey,
             string serverUrl = null,
             string[] defaultTags = null,
             Func<EventBuilder, EventBuilder> additionalOperation = null,
-            bool includeProperties = true
+            bool includeProperties = true,
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum
         ) {
             if (apiKey == null)
                 throw new ArgumentNullException(nameof(apiKey));
@@ -56,6 +60,7 @@ namespace Serilog.Sinks.Exceptionless {
 
                 config.UseInMemoryStorage();
                 config.UseLogger(new SelfLogLogger());
+                config.SetDefaultMinLogLevel(restrictedToMinimumLevel.GetLevel());
             });
 
             _defaultTags = defaultTags;
@@ -91,6 +96,10 @@ namespace Serilog.Sinks.Exceptionless {
 
         public void Emit(LogEvent logEvent) {
             if (logEvent == null || !_client.Configuration.IsValid)
+                return;
+
+            var minLogLevel = _client.Configuration.Settings.GetMinLogLevel(logEvent.GetSource());
+            if (logEvent.Level.GetLevel() < minLogLevel)
                 return;
 
             var builder = _client.CreateFromLogEvent(logEvent).AddTags(_defaultTags);

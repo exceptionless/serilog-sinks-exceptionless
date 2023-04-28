@@ -13,7 +13,7 @@ namespace Serilog.Sinks.Exceptionless
 
             var builder = log.Exception != null
                 ? client.CreateException(log.Exception)
-                : client.CreateLog(log.GetSource(), message, log.GetLevel());
+                : client.CreateLog(log.GetSource(), message, log.Level.GetLevel());
 
             builder.Target.Date = log.Timestamp;
             if (log.Level == LogEventLevel.Fatal)
@@ -36,8 +36,10 @@ namespace Serilog.Sinks.Exceptionless
             return null;
         }
 
-        internal static LogLevel GetLevel(this LogEvent log) {
-            switch (log.Level) {
+        internal static LogLevel GetLevel(this LogEventLevel log)
+        {
+            switch (log)
+            {
                 case LogEventLevel.Verbose:
                     return LogLevel.Trace;
                 case LogEventLevel.Debug:
