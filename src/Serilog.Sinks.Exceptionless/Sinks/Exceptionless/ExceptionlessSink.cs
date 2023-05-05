@@ -104,7 +104,7 @@ namespace Serilog.Sinks.Exceptionless {
 
             var builder = _client.CreateFromLogEvent(logEvent).AddTags(_defaultTags);
 
-            if (_includeProperties && logEvent.Properties != null) {
+            if (_includeProperties) {
                 foreach (var prop in logEvent.Properties)
                 {
                     switch (prop.Key)

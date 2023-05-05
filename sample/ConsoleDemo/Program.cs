@@ -1,6 +1,5 @@
-﻿using Serilog;
+using Serilog;
 using System;
-using System.Threading;
 using Exceptionless;
 using Serilog.Sinks.SystemConsole.Themes;
 
@@ -21,7 +20,7 @@ namespace ConsoleDemo
             try
             {
                 Log.Debug("Getting started");
-                Log.Information("Hello {Name} from thread {ThreadId}", Environment.GetEnvironmentVariable("USERNAME"), Thread.CurrentThread.ManagedThreadId);
+                Log.Information("Hello {Name} from thread {ThreadId}", Environment.GetEnvironmentVariable("USERNAME"), Environment.CurrentManagedThreadId);
                 Log.Warning("No coins remain at position {@Position}", new { Lat = 25, Long = 134 });
 
                 Fail();

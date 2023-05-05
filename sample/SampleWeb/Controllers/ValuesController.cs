@@ -13,7 +13,7 @@ namespace SampleWeb.Controllers
     public class ValuesController : ControllerBase
     {
         private readonly ILogger<ValuesController> _logger;
-        
+
         public ValuesController(ILogger<ValuesController> logger)
         {
             _logger = logger;
@@ -25,7 +25,7 @@ namespace SampleWeb.Controllers
            _logger.LogInformation("Get was called");
             return $"[{Activity.Current?.Id}] {User.Identity?.Name}";
         }
-        
+
         [HttpGet("advanced-topic-user")]
         public string AdvancedTopicUser()
         {
@@ -35,10 +35,10 @@ namespace SampleWeb.Controllers
             using (LogContext.PushProperty(Event.KnownDataKeys.UserInfo, new UserInfo(User.Identity?.Name + " Custom", "Test User Full Name"), true)) {
                 _logger.LogInformation("This log event will have a custom user set.");
             }
-            
+
             return $"[{Activity.Current?.Id}] {User.Identity?.Name}";
         }
-        
+
         [HttpGet("advanced-topic-user-description")]
         public string AdvancedTopicUserDescription(string description)
         {
@@ -46,7 +46,7 @@ namespace SampleWeb.Controllers
             using (LogContext.PushProperty(Event.KnownDataKeys.UserDescription, new UserDescription(User.Identity?.Name, description), true)) {
                 _logger.LogError(new Exception("Test"), "This error event will have a user description set on it.");
             }
-            
+
             return $"[{Activity.Current?.Id}] {User.Identity?.Name}";
         }
     }
