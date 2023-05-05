@@ -82,7 +82,7 @@ namespace Serilog
             if (loggerConfiguration == null)
                 throw new ArgumentNullException(nameof(loggerConfiguration));
 
-            return loggerConfiguration.Sink(new ExceptionlessSink(additionalOperation, includeProperties, client), restrictedToMinimumLevel);
+            return loggerConfiguration.Sink(new ExceptionlessSink(additionalOperation, includeProperties, client, restrictedToMinimumLevel), restrictedToMinimumLevel);
         }
     }
 }

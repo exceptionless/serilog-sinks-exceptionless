@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Exceptionless;
 using Exceptionless.Dependency;
@@ -80,10 +80,14 @@ namespace Serilog.Sinks.Exceptionless {
         /// <param name="client">
         /// Optional instance of <see cref="ExceptionlessClient"/> to use.
         /// </param>
+        /// <param name="restrictedToMinimumLevel">
+        /// The minimum log event level required in order to write an event to the sink.
+        /// </param>
         public ExceptionlessSink(
             Func<EventBuilder, EventBuilder> additionalOperation = null, 
             bool includeProperties = true, 
-            ExceptionlessClient client = null
+            ExceptionlessClient client = null,
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum
         ) {
             _additionalOperation = additionalOperation;
             _includeProperties = includeProperties;
@@ -92,6 +96,8 @@ namespace Serilog.Sinks.Exceptionless {
             if (_client.Configuration.Resolver.HasDefaultRegistration<IExceptionlessLog, NullExceptionlessLog>()) {
                 _client.Configuration.UseLogger(new SelfLogLogger());
             }
+
+            _client.Configuration.SetDefaultMinLogLevel(restrictedToMinimumLevel.GetLevel());
         }
 
         public void Emit(LogEvent logEvent) {
