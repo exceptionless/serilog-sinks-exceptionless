@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Exceptionless;
 using Exceptionless.Dependency;
@@ -145,7 +145,7 @@ namespace Serilog.Sinks.Exceptionless {
         }
 
         void IDisposable.Dispose() {
-            _client?.ProcessQueue();
+            _client?.ProcessQueueAsync().GetAwaiter().GetResult();
         }
     }
 }

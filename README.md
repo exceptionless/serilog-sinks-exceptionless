@@ -38,4 +38,4 @@ Log.Logger = new LoggerConfiguration()
 
 * [Documentation](https://github.com/serilog/serilog/wiki)
 
-Copyright &copy; 2017 Serilog Contributors - Provided under the [Apache License, Version 2.0](http://apache.org/licenses/LICENSE-2.0.html).
+Copyright &copy; 2023 Serilog Contributors - Provided under the [Apache License, Version 2.0](http://apache.org/licenses/LICENSE-2.0.html).
