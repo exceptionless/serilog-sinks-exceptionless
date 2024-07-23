@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Exceptionless;
 using Exceptionless.Logging;
 using Serilog.Core;
@@ -34,6 +35,24 @@ namespace Serilog.Sinks.Exceptionless
                 return value.FlattenProperties()?.ToString();
 
             return null;
+        }
+
+        internal static string[] GetTags(this LogEvent log)
+        {
+            if (log.Properties.TryGetValue("Tags", out LogEventPropertyValue value))
+            {
+                var propertyCollection = value.FlattenProperties() as List<object>;
+                if (propertyCollection == null) return Array.Empty<string>();
+
+                List<string> tags = new List<string>();
+                foreach (var item in propertyCollection)
+                {
+                    tags.Add(item.ToString());
+                }
+
+                return tags.ToArray();
+            }
+            return Array.Empty<string>();
         }
 
         internal static LogLevel GetLevel(this LogEventLevel log)
