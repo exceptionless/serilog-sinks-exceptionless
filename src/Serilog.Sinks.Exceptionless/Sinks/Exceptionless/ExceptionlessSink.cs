@@ -108,7 +108,7 @@ namespace Serilog.Sinks.Exceptionless {
             if (logEvent.Level.GetLevel() < minLogLevel)
                 return;
 
-            var builder = _client.CreateFromLogEvent(logEvent).AddTags(_defaultTags).AddTags(logEvent.GetTags());
+            var builder = _client.CreateFromLogEvent(logEvent).AddTags(_defaultTags);
 
             if (_includeProperties) {
                 foreach (var prop in logEvent.Properties)
@@ -138,6 +138,9 @@ namespace Serilog.Sinks.Exceptionless {
                             string description = userDescription[nameof(UserDescription.Description)] as string;
                             if (!String.IsNullOrWhiteSpace(emailAddress) || !String.IsNullOrWhiteSpace(description))
                                 builder.SetUserDescription(emailAddress, description);
+                            break;
+                        case "Tags":
+                            builder.AddTags(prop.Value.GetTags());
                             break;
                         default: 
                             builder.SetProperty(prop.Key, prop.Value.FlattenProperties());
