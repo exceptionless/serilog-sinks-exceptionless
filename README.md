@@ -36,6 +36,19 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 ```
 
+To get tags to populate on the exceptionless UI, add a `Tags` string enumerable to any log.
+
+```Example with Serilog: 
+Serilog: Log.ForContext("Tags", new List() { "Tag1", "Tag2"}).Information("Seri info");
+```
+
+```Example with ILogger
+using (var scope = _logger.BeginScope(new Dictionary<string, object> { ["Tags"] = new string[] { "Tag1", "Tag2" }}))
+{
+_logger.Log(logLevel, eventId, state, exception, formatter);
+}
+```
+
 * [Documentation](https://github.com/serilog/serilog/wiki)
 
 Copyright &copy; 2023 Serilog Contributors - Provided under the [Apache License, Version 2.0](http://apache.org/licenses/LICENSE-2.0.html).

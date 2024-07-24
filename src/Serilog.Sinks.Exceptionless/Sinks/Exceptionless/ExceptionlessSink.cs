@@ -139,6 +139,9 @@ namespace Serilog.Sinks.Exceptionless {
                             if (!String.IsNullOrWhiteSpace(emailAddress) || !String.IsNullOrWhiteSpace(description))
                                 builder.SetUserDescription(emailAddress, description);
                             break;
+                        case "Tags":
+                            builder.AddTags(prop.Value.GetTags());
+                            break;
                         default: 
                             builder.SetProperty(prop.Key, prop.Value.FlattenProperties());
                             break;
