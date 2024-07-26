@@ -8,11 +8,13 @@ using Exceptionless.Models.Data;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace Serilog.Sinks.Exceptionless {
+namespace Serilog.Sinks.Exceptionless
+{
     /// <summary>
     /// Exceptionless Sink
     /// </summary>
-    public class ExceptionlessSink : ILogEventSink, IDisposable {
+    public class ExceptionlessSink : ILogEventSink, IDisposable
+    {
         private readonly string[] _defaultTags;
         private readonly Func<EventBuilder, EventBuilder> _additionalOperation;
         private readonly bool _includeProperties;
@@ -47,11 +49,13 @@ namespace Serilog.Sinks.Exceptionless {
             Func<EventBuilder, EventBuilder> additionalOperation = null,
             bool includeProperties = true,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum
-        ) {
+        )
+        {
             if (apiKey == null)
                 throw new ArgumentNullException(nameof(apiKey));
 
-            _client = new ExceptionlessClient(config => {
+            _client = new ExceptionlessClient(config =>
+            {
                 if (!String.IsNullOrEmpty(apiKey) && apiKey != "API_KEY_HERE")
                     config.ApiKey = apiKey;
 
@@ -84,23 +88,26 @@ namespace Serilog.Sinks.Exceptionless {
         /// The minimum log event level required in order to write an event to the sink.
         /// </param>
         public ExceptionlessSink(
-            Func<EventBuilder, EventBuilder> additionalOperation = null, 
-            bool includeProperties = true, 
+            Func<EventBuilder, EventBuilder> additionalOperation = null,
+            bool includeProperties = true,
             ExceptionlessClient client = null,
             LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum
-        ) {
+        )
+        {
             _additionalOperation = additionalOperation;
             _includeProperties = includeProperties;
             _client = client ?? ExceptionlessClient.Default;
 
-            if (_client.Configuration.Resolver.HasDefaultRegistration<IExceptionlessLog, NullExceptionlessLog>()) {
+            if (_client.Configuration.Resolver.HasDefaultRegistration<IExceptionlessLog, NullExceptionlessLog>())
+            {
                 _client.Configuration.UseLogger(new SelfLogLogger());
             }
 
             _client.Configuration.SetDefaultMinLogLevel(restrictedToMinimumLevel.GetLevel());
         }
 
-        public void Emit(LogEvent logEvent) {
+        public void Emit(LogEvent logEvent)
+        {
             if (logEvent == null || !_client.Configuration.IsValid)
                 return;
 
@@ -110,7 +117,8 @@ namespace Serilog.Sinks.Exceptionless {
 
             var builder = _client.CreateFromLogEvent(logEvent).AddTags(_defaultTags);
 
-            if (_includeProperties) {
+            if (_includeProperties)
+            {
                 foreach (var prop in logEvent.Properties)
                 {
                     switch (prop.Key)
@@ -142,7 +150,7 @@ namespace Serilog.Sinks.Exceptionless {
                         case "Tags":
                             builder.AddTags(prop.Value.GetTags());
                             break;
-                        default: 
+                        default:
                             builder.SetProperty(prop.Key, prop.Value.FlattenProperties());
                             break;
                     }
@@ -153,7 +161,8 @@ namespace Serilog.Sinks.Exceptionless {
             builder.Submit();
         }
 
-        void IDisposable.Dispose() {
+        void IDisposable.Dispose()
+        {
             _client?.ProcessQueueAsync().GetAwaiter().GetResult();
         }
     }

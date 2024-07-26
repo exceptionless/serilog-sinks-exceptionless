@@ -10,7 +10,7 @@ namespace ConsoleDemo
         public static void Main()
         {
             ExceptionlessClient.Default.Startup("API_KEY");
-            
+
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Console(theme: AnsiConsoleTheme.Code)

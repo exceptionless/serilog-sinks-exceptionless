@@ -8,8 +8,10 @@ using Serilog.Events;
 
 namespace Serilog.Sinks.Exceptionless
 {
-    public static class ExceptionlessClientExtensions {
-        public static EventBuilder CreateFromLogEvent(this ExceptionlessClient client, LogEvent log) {
+    public static class ExceptionlessClientExtensions
+    {
+        public static EventBuilder CreateFromLogEvent(this ExceptionlessClient client, LogEvent log)
+        {
             string message = log.RenderMessage();
 
             var builder = log.Exception != null
@@ -26,11 +28,13 @@ namespace Serilog.Sinks.Exceptionless
             return builder;
         }
 
-        public static void SubmitFromLogEvent(this ExceptionlessClient client, LogEvent log) {
+        public static void SubmitFromLogEvent(this ExceptionlessClient client, LogEvent log)
+        {
             CreateFromLogEvent(client, log).Submit();
         }
 
-        internal static string GetSource(this LogEvent log) {
+        internal static string GetSource(this LogEvent log)
+        {
             if (log.Properties.TryGetValue(Constants.SourceContextPropertyName, out LogEventPropertyValue value))
                 return value.FlattenProperties()?.ToString();
 
@@ -77,14 +81,16 @@ namespace Serilog.Sinks.Exceptionless
         /// by Serilog and brings properties closer to the structure of the original object.
         /// This enables Exceptionless to display the properties in a nicer way.
         /// </summary>
-        internal static object FlattenProperties(this LogEventPropertyValue value) {
+        internal static object FlattenProperties(this LogEventPropertyValue value)
+        {
             if (value == null)
                 return null;
 
             if (value is ScalarValue scalar)
                 return scalar.Value;
 
-            if (value is SequenceValue sequence) {
+            if (value is SequenceValue sequence)
+            {
                 var flattenedProperties = new List<object>(sequence.Elements.Count);
                 foreach (var element in sequence.Elements)
                     flattenedProperties.Add(element.FlattenProperties());
@@ -92,7 +98,8 @@ namespace Serilog.Sinks.Exceptionless
                 return flattenedProperties;
             }
 
-            if (value is StructureValue structure) {
+            if (value is StructureValue structure)
+            {
                 var flattenedProperties = new Dictionary<string, object>(structure.Properties.Count);
                 foreach (var property in structure.Properties)
                     flattenedProperties.Add(property.Name, property.Value.FlattenProperties());
@@ -100,7 +107,8 @@ namespace Serilog.Sinks.Exceptionless
                 return flattenedProperties;
             }
 
-            if (value is DictionaryValue dictionary) {
+            if (value is DictionaryValue dictionary)
+            {
                 var flattenedProperties = new Dictionary<object, object>(dictionary.Elements.Count);
                 foreach (var element in dictionary.Elements)
                     flattenedProperties.Add(element.Key.Value, element.Value.FlattenProperties());

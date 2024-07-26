@@ -22,7 +22,7 @@ namespace SampleWeb.Controllers
         [HttpGet]
         public string Get()
         {
-           _logger.LogInformation("Get was called");
+            _logger.LogInformation("Get was called");
             return $"[{Activity.Current?.Id}] {User.Identity?.Name}";
         }
 
@@ -32,7 +32,8 @@ namespace SampleWeb.Controllers
             // This call is is authenticated so a user identity would automatically be set.
             // However we are overriding it with our own custom user. You may want to do this
             // in a microservice where you know the user but you may not be authenticated.
-            using (LogContext.PushProperty(Event.KnownDataKeys.UserInfo, new UserInfo(User.Identity?.Name + " Custom", "Test User Full Name"), true)) {
+            using (LogContext.PushProperty(Event.KnownDataKeys.UserInfo, new UserInfo(User.Identity?.Name + " Custom", "Test User Full Name"), true))
+            {
                 _logger.LogInformation("This log event will have a custom user set.");
             }
 
@@ -43,7 +44,8 @@ namespace SampleWeb.Controllers
         public string AdvancedTopicUserDescription(string description)
         {
             // User descriptions was intended to provide a description from an end user why an error happened.
-            using (LogContext.PushProperty(Event.KnownDataKeys.UserDescription, new UserDescription(User.Identity?.Name, description), true)) {
+            using (LogContext.PushProperty(Event.KnownDataKeys.UserDescription, new UserDescription(User.Identity?.Name, description), true))
+            {
                 _logger.LogError(new Exception("Test"), "This error event will have a user description set on it.");
             }
 
