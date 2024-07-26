@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Exceptionless.Models;
 using Exceptionless.Models.Data;
@@ -22,16 +23,18 @@ namespace SampleWeb.Controllers
         [HttpGet]
         public string Get()
         {
+            using var _ = _logger.BeginScope(new Dictionary<string, object> { ["Tags"] = new string[] { "Tag1", "Tag2" } });
             _logger.LogInformation("Get was called");
+
             return $"[{Activity.Current?.Id}] {User.Identity?.Name}";
         }
 
         [HttpGet("advanced-topic-user")]
         public string AdvancedTopicUser()
         {
-            // This call is is authenticated so a user identity would automatically be set.
-            // However we are overriding it with our own custom user. You may want to do this
-            // in a microservice where you know the user but you may not be authenticated.
+            // This call is authenticated so a user identity would automatically be set.
+            // However, we are overriding it with our own custom user. You may want to do this
+            // in a microservice where you know the user, but you may not be authenticated.
             using (LogContext.PushProperty(Event.KnownDataKeys.UserInfo, new UserInfo(User.Identity?.Name + " Custom", "Test User Full Name"), true))
             {
                 _logger.LogInformation("This log event will have a custom user set.");

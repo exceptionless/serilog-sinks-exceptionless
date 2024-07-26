@@ -44,15 +44,10 @@ namespace Serilog.Sinks.Exceptionless
         internal static string[] GetTags(this LogEventPropertyValue value)
         {
             var propertyCollection = value.FlattenProperties() as List<object>;
-            if (propertyCollection == null) return Array.Empty<string>();
+            if (propertyCollection == null)
+                return Array.Empty<string>();
 
-            List<string> tags = new List<string>();
-            foreach (var item in propertyCollection)
-            {
-                tags.Add(item.ToString());
-            }
-
-            return tags.ToArray();
+            return propertyCollection.Select(p => p.ToString()).ToArray();
         }
 
         internal static LogLevel GetLevel(this LogEventLevel log)
