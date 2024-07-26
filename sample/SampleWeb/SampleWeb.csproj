@@ -5,8 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Exceptionless.AspNetCore" Version="6.0.0" />
-        <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
+        <PackageReference Include="Exceptionless.AspNetCore" Version="6.0.4" />
+        <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     </ItemGroup>
 
     <ItemGroup>

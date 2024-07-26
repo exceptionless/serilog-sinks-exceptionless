@@ -8,6 +8,6 @@
       <ProjectReference Include="..\..\src\Serilog.Sinks.Exceptionless\Serilog.Sinks.Exceptionless.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+      <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
     </ItemGroup>
 </Project>
