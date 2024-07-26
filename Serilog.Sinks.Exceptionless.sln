@@ -22,6 +22,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDemo", "sample\Conso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleWeb", "sample\SampleWeb\SampleWeb.csproj", "{2637C70D-5166-473F-91FD-C5312310466D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2E864BB3-574A-4A06-A94A-BB0AB05473E1}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build-linux.yml = .github\workflows\build-linux.yml
+		.github\workflows\build-osx.yml = .github\workflows\build-osx.yml
+		.github\workflows\build-windows.yml = .github\workflows\build-windows.yml
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
