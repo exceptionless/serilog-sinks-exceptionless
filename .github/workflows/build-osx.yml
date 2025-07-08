@@ -23,6 +23,6 @@ jobs:
         version=$(minver --tag-prefix v)
         echo "MINVERVERSIONOVERRIDE=$version" >> $GITHUB_ENV
     - name: Build
-      run: dotnet build --configuration Release Serilog.Sinks.Exceptionless.sln
+      run: dotnet build --configuration Release Serilog.Sinks.Exceptionless.slnx
     - name: Run Tests
-      run: dotnet test --configuration Release --no-build Serilog.Sinks.Exceptionless.sln
+      run: dotnet test --configuration Release --no-build Serilog.Sinks.Exceptionless.slnx

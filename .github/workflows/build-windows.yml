@@ -23,12 +23,12 @@ jobs:
         version=$(minver --tag-prefix v)
         echo "MINVERVERSIONOVERRIDE=$version" >> $GITHUB_ENV
     - name: Build
-      run: dotnet build --configuration Release Serilog.Sinks.Exceptionless.sln
+      run: dotnet build --configuration Release Serilog.Sinks.Exceptionless.slnx
     - name: Run Tests
-      run: dotnet test --configuration Release --no-build Serilog.Sinks.Exceptionless.sln
+      run: dotnet test --configuration Release --no-build Serilog.Sinks.Exceptionless.slnx
     - name: Package
       if: github.event_name != 'pull_request'
-      run: dotnet pack --configuration Release --no-build Serilog.Sinks.Exceptionless.sln
+      run: dotnet pack --configuration Release --no-build Serilog.Sinks.Exceptionless.slnx
     - name: Install GitHub Package Tool
       if: github.event_name != 'pull_request'
       run: dotnet tool install gpr -g

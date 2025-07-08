@@ -1,0 +1,23 @@
+<Solution>
+  <Folder Name="/assets/">
+    <File Path=".github/workflows/build-linux.yml" />
+    <File Path=".github/workflows/build-osx.yml" />
+    <File Path=".github/workflows/build-windows.yml" />
+    <File Path="assets/Serilog.snk" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/sample/">
+    <Project Path="sample/ConsoleDemo/ConsoleDemo.csproj" />
+    <Project Path="sample/SampleWeb/SampleWeb.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".github/workflows/build-linux.yml" />
+    <File Path=".github/workflows/build-osx.yml" />
+    <File Path=".github/workflows/build-windows.yml" />
+    <File Path="LICENSE.txt" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Serilog.Sinks.Exceptionless/Serilog.Sinks.Exceptionless.csproj" />
+  </Folder>
+</Solution>
