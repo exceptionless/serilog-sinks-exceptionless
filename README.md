@@ -45,4 +45,14 @@ _logger.Log(logLevel, eventId, state, exception, formatter);
 
 * [Documentation](https://github.com/serilog/serilog/wiki)
 
-Copyright &copy; 2023 Serilog Contributors - Provided under the [Apache License, Version 2.0](http://apache.org/licenses/LICENSE-2.0.html).
+### Flushing Background Queues
+
+Exceptionless events are queued in memory and submitted to the API in the background. If your application process crashes or exits, pending logs may be lost. You should always ensure that you flush the Serilog sink when shutting down:
+
+```csharp
+await Log.CloseAndFlushAsync(); // Recommended for modern async apps
+// or
+Log.CloseAndFlush();
+```
+
+Copyright &copy; 2026 Serilog Contributors - Provided under the [Apache License, Version 2.0](http://apache.org/licenses/LICENSE-2.0.html).

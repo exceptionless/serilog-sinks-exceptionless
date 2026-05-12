@@ -32,7 +32,7 @@ namespace Serilog
             if (apiKey == null)
                 throw new ArgumentNullException(nameof(apiKey));
 
-            return loggerConfiguration.Sink(new ExceptionlessSink(apiKey, null, null, additionalOperation, includeProperties, restrictedToMinimumLevel), restrictedToMinimumLevel);
+            return loggerConfiguration.Sink(new ExceptionlessSink(apiKey, null, null, additionalOperation, includeProperties, restrictedToMinimumLevel), new BatchingOptions { BatchSizeLimit = 50 }, restrictedToMinimumLevel);
         }
 
         /// <summary>Creates a new Exceptionless sink with the specified <paramref name="apiKey"/>.</summary>
@@ -60,7 +60,7 @@ namespace Serilog
             if (apiKey == null)
                 throw new ArgumentNullException(nameof(apiKey));
 
-            return loggerConfiguration.Sink(new ExceptionlessSink(apiKey, serverUrl, defaultTags, additionalOperation, includeProperties, restrictedToMinimumLevel), restrictedToMinimumLevel);
+            return loggerConfiguration.Sink(new ExceptionlessSink(apiKey, serverUrl, defaultTags, additionalOperation, includeProperties, restrictedToMinimumLevel), new BatchingOptions { BatchSizeLimit = 50 }, restrictedToMinimumLevel);
         }
 
         /// <summary>Creates a new Exceptionless sink.</summary>
@@ -82,7 +82,7 @@ namespace Serilog
             if (loggerConfiguration == null)
                 throw new ArgumentNullException(nameof(loggerConfiguration));
 
-            return loggerConfiguration.Sink(new ExceptionlessSink(additionalOperation, includeProperties, client, restrictedToMinimumLevel), restrictedToMinimumLevel);
+            return loggerConfiguration.Sink(new ExceptionlessSink(additionalOperation, includeProperties, client, restrictedToMinimumLevel), new BatchingOptions { BatchSizeLimit = 50 }, restrictedToMinimumLevel);
         }
     }
 }

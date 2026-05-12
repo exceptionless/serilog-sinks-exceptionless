@@ -7,7 +7,7 @@ namespace ConsoleDemo
 {
     public class Program
     {
-        public static void Main()
+        public static async System.Threading.Tasks.Task Main()
         {
             ExceptionlessClient.Default.Startup("API_KEY");
 
@@ -30,7 +30,7 @@ namespace ConsoleDemo
                 Log.Error(ex, "Something went wrong");
             }
 
-            Log.CloseAndFlush();
+            await Log.CloseAndFlushAsync();
         }
 
         private static void Fail()

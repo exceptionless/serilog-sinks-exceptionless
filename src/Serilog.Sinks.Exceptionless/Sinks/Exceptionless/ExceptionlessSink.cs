@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Exceptionless;
 using Exceptionless.Dependency;
 using Exceptionless.Logging;
@@ -13,7 +14,10 @@ namespace Serilog.Sinks.Exceptionless
     /// <summary>
     /// Exceptionless Sink
     /// </summary>
-    public class ExceptionlessSink : ILogEventSink, IDisposable
+    public class ExceptionlessSink : IBatchedLogEventSink, IDisposable
+#if NET8_0_OR_GREATER
+        , IAsyncDisposable
+#endif
     {
         private readonly string[] _defaultTags;
         private readonly Func<EventBuilder, EventBuilder> _additionalOperation;
@@ -106,64 +110,86 @@ namespace Serilog.Sinks.Exceptionless
             _client.Configuration.SetDefaultMinLogLevel(restrictedToMinimumLevel.GetLevel());
         }
 
-        public void Emit(LogEvent logEvent)
+        public Task EmitBatchAsync(IReadOnlyCollection<LogEvent> batch)
         {
-            if (logEvent == null || !_client.Configuration.IsValid)
-                return;
+            if (batch == null || batch.Count == 0 || !_client.Configuration.IsValid)
+                return Task.CompletedTask;
 
-            var minLogLevel = _client.Configuration.Settings.GetMinLogLevel(logEvent.GetSource());
-            if (logEvent.Level.GetLevel() < minLogLevel)
-                return;
-
-            var builder = _client.CreateFromLogEvent(logEvent).AddTags(_defaultTags);
-
-            if (_includeProperties)
+            foreach (var logEvent in batch)
             {
-                foreach (var prop in logEvent.Properties)
+                var minLogLevel = _client.Configuration.Settings.GetMinLogLevel(logEvent.GetSource());
+                if (logEvent.Level.GetLevel() < minLogLevel)
+                    continue;
+
+                var builder = _client.CreateFromLogEvent(logEvent).AddTags(_defaultTags);
+
+                if (_includeProperties)
                 {
-                    switch (prop.Key)
+                    foreach (var prop in logEvent.Properties)
                     {
-                        case Constants.SourceContextPropertyName:
-                            continue;
-                        case Event.KnownDataKeys.UserInfo when prop.Value is StructureValue uis && String.Equals(nameof(UserInfo), uis.TypeTag):
-                            var userInfo = uis.FlattenProperties() as Dictionary<string, object>;
-                            if (userInfo is null)
+                        switch (prop.Key)
+                        {
+                            case Constants.SourceContextPropertyName:
                                 continue;
+                            case Event.KnownDataKeys.UserInfo when prop.Value is StructureValue uis && String.Equals(nameof(UserInfo), uis.TypeTag):
+                                var userInfo = uis.FlattenProperties() as Dictionary<string, object>;
+                                if (userInfo is null)
+                                    continue;
 
-                            // UserDescription Data property is currently ignored.
-                            string identity = userInfo[nameof(UserInfo.Identity)] as string;
-                            string name = userInfo[nameof(UserInfo.Name)] as string;
-                            if (!String.IsNullOrWhiteSpace(identity) || !String.IsNullOrWhiteSpace(name))
-                                builder.SetUserIdentity(identity, name);
-                            break;
-                        case Event.KnownDataKeys.UserDescription when prop.Value is StructureValue uds && String.Equals(nameof(UserDescription), uds.TypeTag):
-                            var userDescription = uds.FlattenProperties() as Dictionary<string, object>;
-                            if (userDescription is null)
-                                continue;
+                                // UserDescription Data property is currently ignored.
+                                userInfo.TryGetValue(nameof(UserInfo.Identity), out object identityValue);
+                                userInfo.TryGetValue(nameof(UserInfo.Name), out object nameValue);
+                                string identity = identityValue as string;
+                                string name = nameValue as string;
+                                if (!String.IsNullOrWhiteSpace(identity) || !String.IsNullOrWhiteSpace(name))
+                                    builder.SetUserIdentity(identity, name);
+                                break;
+                            case Event.KnownDataKeys.UserDescription when prop.Value is StructureValue uds && String.Equals(nameof(UserDescription), uds.TypeTag):
+                                var userDescription = uds.FlattenProperties() as Dictionary<string, object>;
+                                if (userDescription is null)
+                                    continue;
 
-                            // UserDescription Data property is currently ignored.
-                            string emailAddress = userDescription[nameof(UserDescription.EmailAddress)] as string;
-                            string description = userDescription[nameof(UserDescription.Description)] as string;
-                            if (!String.IsNullOrWhiteSpace(emailAddress) || !String.IsNullOrWhiteSpace(description))
-                                builder.SetUserDescription(emailAddress, description);
-                            break;
-                        case "Tags":
-                            builder.AddTags(prop.Value.GetTags());
-                            break;
-                        default:
-                            builder.SetProperty(prop.Key, prop.Value.FlattenProperties());
-                            break;
+                                // UserDescription Data property is currently ignored.
+                                userDescription.TryGetValue(nameof(UserDescription.EmailAddress), out object emailAddressValue);
+                                userDescription.TryGetValue(nameof(UserDescription.Description), out object descriptionValue);
+                                string emailAddress = emailAddressValue as string;
+                                string description = descriptionValue as string;
+                                if (!String.IsNullOrWhiteSpace(emailAddress) || !String.IsNullOrWhiteSpace(description))
+                                    builder.SetUserDescription(emailAddress, description);
+                                break;
+                            case "Tags":
+                                builder.AddTags(prop.Value.GetTags());
+                                break;
+                            default:
+                                builder.SetProperty(prop.Key, prop.Value.FlattenProperties());
+                                break;
+                        }
                     }
                 }
+
+                _additionalOperation?.Invoke(builder);
+                builder.Submit();
             }
 
-            _additionalOperation?.Invoke(builder);
-            builder.Submit();
+            return Task.CompletedTask;
+        }
+
+        public Task OnEmptyBatchAsync()
+        {
+            return Task.CompletedTask;
         }
 
         void IDisposable.Dispose()
         {
             _client?.ProcessQueueAsync().GetAwaiter().GetResult();
         }
+
+#if NET8_0_OR_GREATER
+        public async ValueTask DisposeAsync()
+        {
+            if (_client != null)
+                await _client.ProcessQueueAsync().ConfigureAwait(false);
+        }
+#endif
     }
 }
