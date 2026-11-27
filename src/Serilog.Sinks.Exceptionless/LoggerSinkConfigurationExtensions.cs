@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using Exceptionless;
 using Serilog.Configuration;
 using Serilog.Events;
@@ -32,7 +33,7 @@ namespace Serilog
             if (apiKey == null)
                 throw new ArgumentNullException(nameof(apiKey));
 
-            return loggerConfiguration.Sink(new ExceptionlessSink(apiKey, null, null, additionalOperation, includeProperties, restrictedToMinimumLevel), new BatchingOptions { BatchSizeLimit = 50 }, restrictedToMinimumLevel);
+            return loggerConfiguration.Sink(new ExceptionlessSink(apiKey, null, null, additionalOperation, includeProperties, restrictedToMinimumLevel, null), new BatchingOptions { BatchSizeLimit = 50 }, restrictedToMinimumLevel);
         }
 
         /// <summary>Creates a new Exceptionless sink with the specified <paramref name="apiKey"/>.</summary>
@@ -43,6 +44,10 @@ namespace Serilog
         /// <param name="additionalOperation">Any additional operation to run against the build exceptions</param>
         /// <param name="includeProperties">If false it suppressed sending the Serilog properties to Exceptionless</param>
         /// <param name="restrictedToMinimumLevel">The minimum log event level required in order to write an event to the sink.</param>
+        /// <param name="environment">
+        /// Optional deployment environment for every event, such as production or staging. When not set, the client
+        /// detects ASPNETCORE_ENVIRONMENT, DOTNET_ENVIRONMENT or AZURE_FUNCTIONS_ENVIRONMENT.
+        /// </param>
         /// <returns>The <see cref="LoggerConfiguration"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static LoggerConfiguration Exceptionless(
@@ -52,7 +57,8 @@ namespace Serilog
             string[] defaultTags = null,
             Func<EventBuilder, EventBuilder> additionalOperation = null,
             bool includeProperties = true,
-            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+            string environment = null
         )
         {
             if (loggerConfiguration == null)
@@ -60,7 +66,22 @@ namespace Serilog
             if (apiKey == null)
                 throw new ArgumentNullException(nameof(apiKey));
 
-            return loggerConfiguration.Sink(new ExceptionlessSink(apiKey, serverUrl, defaultTags, additionalOperation, includeProperties, restrictedToMinimumLevel), new BatchingOptions { BatchSizeLimit = 50 }, restrictedToMinimumLevel);
+            return loggerConfiguration.Sink(new ExceptionlessSink(apiKey, serverUrl, defaultTags, additionalOperation, includeProperties, restrictedToMinimumLevel, environment), new BatchingOptions { BatchSizeLimit = 50 }, restrictedToMinimumLevel);
+        }
+
+        /// <summary>Kept for binary compatibility; use the overload that accepts an environment.</summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static LoggerConfiguration Exceptionless(
+            this LoggerSinkConfiguration loggerConfiguration,
+            string apiKey,
+            string serverUrl,
+            string[] defaultTags,
+            Func<EventBuilder, EventBuilder> additionalOperation,
+            bool includeProperties,
+            LogEventLevel restrictedToMinimumLevel
+        )
+        {
+            return Exceptionless(loggerConfiguration, apiKey, serverUrl, defaultTags, additionalOperation, includeProperties, restrictedToMinimumLevel, null);
         }
 
         /// <summary>Creates a new Exceptionless sink.</summary>
