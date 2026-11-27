@@ -43,6 +43,18 @@ using var _ = _logger.BeginScope(new Dictionary<string, object> { ["Tags"] = new
 _logger.Log(logLevel, eventId, state, exception, formatter);
 ```
 
+### Deployment environment
+
+Events carry a deployment environment, such as `production` or `staging`. The default `ExceptionlessClient` instance, or one you pass as `client`, provides it from its configuration: `Exceptionless:Environment`, `ASPNETCORE_ENVIRONMENT` or `DOTNET_ENVIRONMENT`. When the sink creates its own client from an API key, set it explicitly:
+
+```csharp
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Exceptionless("API_KEY", environment: "staging")
+    .CreateLogger();
+```
+
+To override the environment for individual events, use `additionalOperation: b => b.SetEnvironment("staging")`.
+
 * [Documentation](https://github.com/serilog/serilog/wiki)
 
 ### Flushing Background Queues

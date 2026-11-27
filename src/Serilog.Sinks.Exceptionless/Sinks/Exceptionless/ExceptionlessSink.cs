@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Exceptionless;
 using Exceptionless.Dependency;
@@ -46,13 +47,18 @@ namespace Serilog.Sinks.Exceptionless
         /// <param name="restrictedToMinimumLevel">
         /// The minimum log event level required in order to write an event to the sink.
         /// </param>
+        /// <param name="environment">
+        /// Optional deployment environment for every event, such as production or staging. When not set, the client
+        /// detects ASPNETCORE_ENVIRONMENT, DOTNET_ENVIRONMENT or AZURE_FUNCTIONS_ENVIRONMENT.
+        /// </param>
         public ExceptionlessSink(
             string apiKey,
             string serverUrl = null,
             string[] defaultTags = null,
             Func<EventBuilder, EventBuilder> additionalOperation = null,
             bool includeProperties = true,
-            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum
+            LogEventLevel restrictedToMinimumLevel = LevelAlias.Minimum,
+            string environment = null
         )
         {
             if (apiKey == null)
@@ -66,6 +72,9 @@ namespace Serilog.Sinks.Exceptionless
                 if (!String.IsNullOrEmpty(serverUrl))
                     config.ServerUrl = serverUrl;
 
+                if (environment != null)
+                    config.SetEnvironment(environment);
+
                 config.UseInMemoryStorage();
                 config.UseLogger(new SelfLogLogger());
                 config.SetDefaultMinLogLevel(restrictedToMinimumLevel.GetLevel());
@@ -74,6 +83,19 @@ namespace Serilog.Sinks.Exceptionless
             _defaultTags = defaultTags;
             _additionalOperation = additionalOperation;
             _includeProperties = includeProperties;
+        }
+
+        /// <summary>Kept for binary compatibility; use the constructor that accepts an environment.</summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public ExceptionlessSink(
+            string apiKey,
+            string serverUrl,
+            string[] defaultTags,
+            Func<EventBuilder, EventBuilder> additionalOperation,
+            bool includeProperties,
+            LogEventLevel restrictedToMinimumLevel
+        ) : this(apiKey, serverUrl, defaultTags, additionalOperation, includeProperties, restrictedToMinimumLevel, null)
+        {
         }
 
         /// <summary>
